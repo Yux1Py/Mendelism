@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "mendelism",
+  "version": "${version}",
+
+  "name": "Mendelism",
+  "description": "This is a Mod about Basic Content about Law of Uniformity and Law of Independent Assortment, as well as something about Gregor Johann Mendel!",
+  "authors": [
+    "鱼蜥"
+  ],
+  "contact": {
+    "homepage": "none",
+    "sources": "none"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/mendelism/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.yux1.mendelism.Mendelism"
+    ]
+  },
+  "mixins": [
+    "mendelism.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.18.2",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
