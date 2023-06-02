@@ -1,5 +1,7 @@
 package com.yux1.mendelism;
 
+import com.yux1.mendelism.block.ModBlocks;
+import com.yux1.mendelism.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +14,16 @@ public class Mendelism implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
+		//放在最顶上
+		//ModConfigureFeatures.registerConfigureFeatures();
+
+		ModItems.registerModItems();
+		ModBlocks.registerModBlocks();
+		//ModRegistries.registerModStuffs();
+
+		//ModWorldGeneration.generateModWorldGen();
+
+		LOGGER.info("Mendelism Start!");
 	}
 }
