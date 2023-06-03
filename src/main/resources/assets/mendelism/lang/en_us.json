@@ -1,3 +1,7 @@
 {
+  "item.mendelism.pea": "Pea",
 
+  "block.mendelism.pea_crop": "Pea Crop",
+
+  "itemGroup.mendelism.mendelism": "Mendelism"
 }

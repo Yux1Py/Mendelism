@@ -1,0 +1,6 @@
+{
+  "parent": "mendelism:item/pea",
+  "textures": {
+    "layer0": "mendelism:item/pea_yellow_round"
+  }
+}

@@ -31,7 +31,7 @@ dependencies {
 processResources {
 	inputs.property "version", project.version
 
-	filesMatching("mendelism.mod.json") {
+	filesMatching("fabric.mod.json") {
 		expand "version": project.version
 	}
 }
