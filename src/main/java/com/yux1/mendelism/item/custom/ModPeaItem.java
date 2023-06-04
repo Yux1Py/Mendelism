@@ -23,7 +23,7 @@ public class ModPeaItem extends BlockItem {
         super(block, settings);
     }
 
-    private static void putColorNbt(ItemStack itemStack){
+    public static void putColorNbt(ItemStack itemStack){
         if (itemStack.getNbt() != null){
             if (Objects.equals(itemStack.getNbt().getString("pea.seed_color.1"), "green") ||
                     Objects.equals(itemStack.getNbt().getString("pea.seed_color.2"), "green")){
@@ -32,7 +32,7 @@ public class ModPeaItem extends BlockItem {
                 itemStack.setNbt(nbt);
             }
             else if (Objects.equals(itemStack.getNbt().getString("pea.seed_color.1"), "yellow") &&
-                    Objects.equals(itemStack.getNbt().getString("pea.seed_color.1-2"), "yellow")){
+                    Objects.equals(itemStack.getNbt().getString("pea.seed_color.2"), "yellow")){
                 NbtCompound nbt = new NbtCompound();
                 nbt.putString("pea.seed_color", "yellow");
                 itemStack.setNbt(nbt);

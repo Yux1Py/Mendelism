@@ -2,6 +2,7 @@ package com.yux1.mendelism.block.custom;
 
 import com.yux1.mendelism.block.ModBlocks;
 import com.yux1.mendelism.item.ModItems;
+import com.yux1.mendelism.item.custom.ModPeaItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
@@ -98,18 +99,21 @@ public class ModPeaCropBlock extends CropBlock {
     private void dropItemStack(World world, BlockPos pos, BlockState state, PlayerEntity player){
         if (this.getAge(state) == 0 || this.getAge(state) == 1 || this.getAge(state) == 2){
             ItemStack pea = new ItemStack(ModItems.PEA);
-            setPeaItemNbt(state, pea, "pea.seed_color.1", GENOTYPE_SEED_COLOR_1);
-            setPeaItemNbt(state, pea, "pea.seed_color.2", GENOTYPE_SEED_COLOR_2);
+            //setPeaItemNbt(world, state, pea, "pea.seed_color.1", GENOTYPE_SEED_COLOR_1);
+            //setPeaItemNbt(world, state, pea, "pea.seed_color.2", GENOTYPE_SEED_COLOR_2);
+            NbtCompound seedColorNbt = new NbtCompound();
+            seedColorNbt.putString("pea.seed_color.1", "green");
+            ModPeaItem.putColorNbt(pea);
             dropStack(world, pos, pea);
         }
     }
 
     //设置豌豆的nbt属性
-    private static void setPeaItemNbt(BlockState state, ItemStack pea, String key, BooleanProperty booleanProperty){
-        NbtCompound seedColorNbt1 = new NbtCompound();
-        //seedColorNbt1.putString(key, turnBooleanPropertyIntoString(state, booleanProperty));
-        seedColorNbt1.putString(key, "yellow");
-        pea.setNbt(seedColorNbt1);
+    private static void setPeaItemNbt(World world, BlockState state, ItemStack pea, String key, BooleanProperty booleanProperty){
+        NbtCompound seedColorNbt = new NbtCompound();
+        //seedColorNbt.putString(key, turnBooleanPropertyIntoString(world, state, booleanProperty));
+        seedColorNbt.putString(key, "green");
+        pea.setNbt(seedColorNbt);
     }
 
     //设置豌豆植株的BoolProperty
@@ -118,16 +122,17 @@ public class ModPeaCropBlock extends CropBlock {
     }
 
     //将对应的Bool Property转化为可录入nbt的String类型
-    private static String turnBooleanPropertyIntoString(BlockState state, BooleanProperty booleanProperty){
-        if (booleanProperty.equals(GENOTYPE_SEED_COLOR_1)){
-            if (state.get(booleanProperty)){
+    private static String turnBooleanPropertyIntoString(World world, BlockState state, BooleanProperty booleanProperty){
+        if (booleanProperty.equals(GENOTYPE_SEED_COLOR_1) && !world.isClient()){
+            /*if (state.get(booleanProperty)){
                 return "green";
             }
             else {
                 return "yellow";
-            }
+            }*/
+            return "green";
         }
-        return "null";
+        return "green";
     }
 
     //将对应的可录入nbt的String转化为Bool Property的Bool
