@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mendelism:item/pea_green_round"
+  },
+
+  "overrides": [
+    {
+      "predicate": {
+        "seed_color": 1
+      },
+      "model": "mendelism:item/pea_green_round"
+    },
+    {
+      "predicate": {
+        "seed_color": 0
+      },
+      "model": "mendelism:item/pea_yellow_round"
+    }
+  ]
+}

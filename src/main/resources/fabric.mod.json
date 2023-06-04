@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "com.yux1.mendelism.Mendelism"
+    ],
+    "client": [
+      "com.yux1.mendelism.MendelismClientMod"
     ]
   },
   "mixins": [

@@ -1,8 +1,12 @@
 package com.yux1.mendelism.block;
 
 import com.yux1.mendelism.Mendelism;
+import com.yux1.mendelism.block.custom.ModPeaCropBlock;
+import com.yux1.mendelism.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -18,6 +22,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ModBlocks {
+
+    public static final Block PEA_CROP = registerBlockWithoutBlockItem("pea_crop",
+            new ModPeaCropBlock(FabricBlockSettings.copy(Blocks.WHEAT)));
 
 
     private static Block registerBlock(String name, Block block, ItemGroup itemGroup) {

@@ -59,9 +59,10 @@ public class ModPeaCropBlock extends CropBlock {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        //在放置时将方块的雄蕊状态设置为有雄蕊
+        //在放置时将方块的雄蕊状态设置为有雄蕊，并且无花粉输入
         if (!world.isClient()){
             world.setBlockState(pos, state.with(HAS_STAMEN, true), Block.NOTIFY_ALL);
+            world.setBlockState(pos, state.with(HAS_POLLEN, false), Block.NOTIFY_ALL);
         }
     }
 
