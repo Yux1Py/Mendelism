@@ -13,7 +13,7 @@
     },
     {
       "predicate": {
-        "seed_color": 0
+        "seed_color": 3
       },
       "model": "mendelism:item/pea_yellow_round"
     }

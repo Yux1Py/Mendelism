@@ -3,6 +3,7 @@ package com.yux1.mendelism.item;
 import com.yux1.mendelism.Mendelism;
 import com.yux1.mendelism.block.ModBlocks;
 import com.yux1.mendelism.item.custom.ModPeaItem;
+import com.yux1.mendelism.item.custom.ModPeaPodItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -10,6 +11,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ModItems {
+
+    public static final Item PEA_POD = registerItem("pea_pod",
+            new ModPeaPodItem(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
 
     public static final Item PEA = registerItem("pea",
             new ModPeaItem(ModBlocks.PEA_CROP,

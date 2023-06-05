@@ -50,9 +50,11 @@ public class ModPeaCropBlock extends CropBlock {
         setDefaultState(this.getStateManager().getDefaultState().with(SEED_COLOR, 1));
     }
 
+    //别忘了添加！！
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(HAS_STAMEN, HAS_POLLEN);
+        builder.add(SEED_COLOR);
         super.appendProperties(builder);
     }
 
