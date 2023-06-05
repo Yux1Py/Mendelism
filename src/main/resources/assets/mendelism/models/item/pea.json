@@ -3,7 +3,6 @@
   "textures": {
     "layer0": "mendelism:item/pea_green_round"
   },
-
   "overrides": [
     {
       "predicate": {

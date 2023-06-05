@@ -1,13 +1,14 @@
 package com.yux1.mendelism.block.custom;
 
+import com.yux1.mendelism.item.ModItems;
 import com.yux1.mendelism.util.ModTags;
-import com.yux1.mendelism.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtInt;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -19,9 +20,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.Random;
 
 public class ModPeaCropBlock extends CropBlock {
@@ -37,24 +36,24 @@ public class ModPeaCropBlock extends CropBlock {
 
     //基因型，1代表显性纯合子， 2代表杂合子， 3代表隐性纯合子
     //
-    //种皮颜色  绿色·黄色
-    public static final IntProperty SEED_COLOR = IntProperty.of("seed_color", 1, 3);
+    //果皮形状  饱满·皱缩
+    public static final IntProperty PEEL_COLOR = IntProperty.of("peel_color", 1, 3);
 
     public ModPeaCropBlock(Settings settings) {
         super(settings);
         //默认有雄蕊，无花粉
         setDefaultState(this.getStateManager().getDefaultState().with(HAS_STAMEN, true));
-        setDefaultState(this.getDefaultState().with(HAS_POLLEN, false));
+        setDefaultState(this.getStateManager().getDefaultState().with(HAS_POLLEN, false));
         //默认基因型为
-        // 绿色种皮
-        setDefaultState(this.getStateManager().getDefaultState().with(SEED_COLOR, 1));
+        // 饱满纯合子果皮
+        setDefaultState(this.getStateManager().getDefaultState().with(PEEL_COLOR, 1));
     }
 
     //别忘了添加！！
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(HAS_STAMEN, HAS_POLLEN);
-        builder.add(SEED_COLOR);
+        builder.add(PEEL_COLOR);
         super.appendProperties(builder);
     }
 
@@ -68,16 +67,14 @@ public class ModPeaCropBlock extends CropBlock {
             }
             //如果到达花期
             else if (i >= 5 && i < this.getMaxAge()){
-                //if (!world.isClient()){
-                    //如果有雄蕊（未做去雄处理），继续正常生长
-                    if (state.get(HAS_STAMEN)){
-                        cropGrow(this, i, state, world, pos, random);
-                    }
-                    //如果有花粉输入（去雄后），继续生长并输入花粉基因
-                    else if (!state.get(HAS_STAMEN) && state.get(HAS_POLLEN)){
+                //如果有雄蕊（未做去雄处理），继续正常生长
+                if (state.get(HAS_STAMEN)){
+                    cropGrow(this, i, state, world, pos, random);
+                }
+                //如果有花粉输入（去雄后），继续生长并输入花粉基因
+                else if (!state.get(HAS_STAMEN) && state.get(HAS_POLLEN)){
 
-                    }
-                //}
+                }
             }
         }
 
@@ -100,13 +97,14 @@ public class ModPeaCropBlock extends CropBlock {
         }
 
         //若未去雄，顺利执行其他操作
-        //if (!world.isClient()){player.sendMessage(new LiteralText(player.getStackInHand(Hand.MAIN_HAND).getItem().toString()), false);}
+        //去雄
         if (Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.EMASCULATION)){
             if (!world.isClient()){
+                player.swingHand(Hand.MAIN_HAND);
                 world.setBlockState(pos, state.with(HAS_STAMEN, false));
-                player.sendMessage(new LiteralText("去雄"), false);
             }
         }
+        //若成熟，则收获
         else {
             if (this.getAge(state) == this.getMaxAge()){
                 world.breakBlock(pos, false, player);
@@ -121,6 +119,11 @@ public class ModPeaCropBlock extends CropBlock {
     private static void dropPeaPod(World world, BlockPos pos, BlockState state, PlayerEntity player){
         if (!world.isClient()){
             player.sendMessage(new LiteralText("掉落豆荚"), false);
+            ItemStack peaPod = new ItemStack(ModItems.PEA_POD);
+            NbtCompound nbt = new NbtCompound();
+            blockPropertyToPeaPodNbt(state, PEEL_COLOR, nbt, "peel_color");
+            peaPod.setNbt(nbt);
+            dropStack(world, pos, peaPod);
         }
     }
 
@@ -129,5 +132,19 @@ public class ModPeaCropBlock extends CropBlock {
         if (random.nextInt((int)(25.0F / f) + 1) == 0) {
             world.setBlockState(pos, block.withAge(thisAge + 1), 2);
         }
+    }
+
+    private static void blockPropertyToPeaPodNbt(BlockState state, IntProperty intProperty, NbtCompound nbt, String nbtKey){
+        switch (state.get(intProperty)){
+            case 1:
+                nbt.putInt(nbtKey, 1);
+            case 2:
+                nbt.putInt(nbtKey, 2);
+            case 3:
+                nbt.putInt(nbtKey, 3);
+            default:
+                nbt.putInt(nbtKey, 1);
+        }
+
     }
 }

@@ -2,5 +2,19 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "mendelism:item/pea_pod_green_plump"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "peel_color": 1
+      },
+      "model": "mendelism:item/pea_pod_green_plump"
+    },
+    {
+      "predicate": {
+        "peel_color": 0
+      },
+      "model": "mendelism:item/pea_pod_green_shrunken"
+    }
+  ]
 }
