@@ -20,7 +20,7 @@ public class ModModelPredicateProvider {
                 }));
     }
 
-    public static void registerModModels(){
+    /*public static void registerModModels(){
         registerPea();
-    }
+    }*/
 }
