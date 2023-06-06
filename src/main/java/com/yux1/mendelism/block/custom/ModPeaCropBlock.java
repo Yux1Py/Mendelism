@@ -2,9 +2,11 @@ package com.yux1.mendelism.block.custom;
 
 import com.yux1.mendelism.item.ModItems;
 import com.yux1.mendelism.util.ModTags;
+import com.yux1.mendelism.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -20,6 +22,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -36,8 +39,11 @@ public class ModPeaCropBlock extends CropBlock {
 
     //基因型，1代表显性纯合子， 2代表杂合子， 3代表隐性纯合子
     //
+    //植株花色  红色·白色
     //果皮形状  饱满·皱缩
+    public static final IntProperty FLOWER_COLOR = IntProperty.of("flower_color", 1, 3);
     public static final IntProperty PEEL_COLOR = IntProperty.of("peel_color", 1, 3);
+    public static final BooleanProperty TEST = BooleanProperty.of("test");
 
     public ModPeaCropBlock(Settings settings) {
         super(settings);
@@ -45,20 +51,30 @@ public class ModPeaCropBlock extends CropBlock {
         setDefaultState(this.getStateManager().getDefaultState().with(HAS_STAMEN, true));
         setDefaultState(this.getStateManager().getDefaultState().with(HAS_POLLEN, false));
         //默认基因型为
-        // 饱满纯合子果皮
+        // 红色花色纯合子
+        // 饱满果皮纯合子
+        setDefaultState(this.getStateManager().getDefaultState().with(FLOWER_COLOR, 1));
         setDefaultState(this.getStateManager().getDefaultState().with(PEEL_COLOR, 1));
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        setDefaultState(this.getStateManager().getDefaultState().with(FLOWER_COLOR, 1));
+        super.onPlaced(world, pos, state, placer, itemStack);
     }
 
     //别忘了添加！！
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(HAS_STAMEN, HAS_POLLEN);
-        builder.add(PEEL_COLOR);
+        builder.add(FLOWER_COLOR, PEEL_COLOR);
+        builder.add(TEST);
         super.appendProperties(builder);
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        ModUtils.print(world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10, false), state.get(FLOWER_COLOR).toString(), false);
         if (world.getBaseLightLevel(pos, 0) >= 9) {
             int i = this.getAge(state);
             //如果还没开花，正常生长

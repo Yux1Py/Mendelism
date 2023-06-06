@@ -4,7 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
 
 public class ModUtils {
-    public static void print(PlayerEntity player, LiteralText literalText, Boolean actionBar){
-        player.sendMessage(literalText, actionBar);
+    public static void print(PlayerEntity player, String string, Boolean actionBar){
+        player.sendMessage(new LiteralText(string), actionBar);
     }
 }

@@ -21,7 +21,7 @@ public class Mendelism implements ModInitializer {
 
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
-		ModModelPredicateProvider.registerModModels();
+		//ModModelPredicateProvider.registerModModels();
 		//ModRegistries.registerModStuffs();
 
 		//ModWorldGeneration.generateModWorldGen();

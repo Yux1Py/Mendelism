@@ -1,6 +1,6 @@
 {
   "parent": "mendelism:item/pea_pod",
   "textures": {
-    "layer0": "mendelism:item/pea_pod_green_shrunken"
+    "layer0": "mendelism:item/pea_green_round"
   }
 }

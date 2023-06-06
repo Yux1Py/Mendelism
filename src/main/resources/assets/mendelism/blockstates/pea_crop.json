@@ -1,28 +1,76 @@
 {
   "variants": {
-    "age=0": {
+    "age=0,flower_color=1": {
       "model": "mendelism:block/pea_crop_00"
     },
-    "age=1": {
+    "age=0,flower_color =2": {
+      "model": "mendelism:block/pea_crop_00"
+    },
+    "age=0,flower_color=3": {
+      "model": "mendelism:block/pea_crop_00"
+    },
+    "age=1,flower_color=1": {
       "model": "mendelism:block/pea_crop_01"
     },
-    "age=2": {
+    "age=1,flower_color=2": {
+      "model": "mendelism:block/pea_crop_01"
+    },
+    "age=1,flower_color=3": {
+      "model": "mendelism:block/pea_crop_01"
+    },
+    "age=2,flower_color=1": {
       "model": "mendelism:block/pea_crop_02"
     },
-    "age=3": {
+    "age=2,flower_color=2": {
+      "model": "mendelism:block/pea_crop_02"
+    },
+    "age=2,flower_color=3": {
+      "model": "mendelism:block/pea_crop_02"
+    },
+    "age=3,flower_color=1": {
       "model": "mendelism:block/pea_crop_03"
     },
-    "age=4": {
+    "age=3,flower_color=2": {
+      "model": "mendelism:block/pea_crop_03"
+    },
+    "age=3,flower_color=3": {
+      "model": "mendelism:block/pea_crop_03"
+    },
+    "age=4,flower_color=1": {
       "model": "mendelism:block/pea_crop_04"
     },
-    "age=5": {
-      "model": "mendelism:block/pea_crop_05"
+    "age=4,flower_color=2": {
+      "model": "mendelism:block/pea_crop_04"
     },
-    "age=6": {
-      "model": "mendelism:block/pea_crop_06"
+    "age=4,flower_color=3": {
+      "model": "mendelism:block/pea_crop_04"
     },
-    "age=7": {
-      "model": "mendelism:block/pea_crop_07"
+    "age=5,flower_color=1": {
+      "model": "mendelism:block/pea_crop_05_red"
+    },
+    "age=5,flower_color=2": {
+      "model": "mendelism:block/pea_crop_05_red"
+    },
+    "age=5,flower_color=3": {
+      "model": "mendelism:block/pea_crop_05_white"
+    },
+    "age=6,flower_color=1": {
+      "model": "mendelism:block/pea_crop_06_red"
+    },
+    "age=6,flower_color=2": {
+      "model": "mendelism:block/pea_crop_06_red"
+    },
+    "age=6,flower_color=3": {
+      "model": "mendelism:block/pea_crop_06_white"
+    },
+    "age=7,flower_color=1": {
+      "model": "mendelism:block/pea_crop_07_red"
+    },
+    "age=7,flower_color=2": {
+      "model": "mendelism:block/pea_crop_07_red"
+    },
+    "age=7,flower_color=3": {
+      "model": "mendelism:block/pea_crop_07_white"
     }
   }
 }

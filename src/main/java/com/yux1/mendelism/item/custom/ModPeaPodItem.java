@@ -41,7 +41,8 @@ public class ModPeaPodItem extends Item {
             assert stack.getNbt() != null;
             int peel_color =  stack.getNbt().getInt("peel_color");
             tooltip.add(new LiteralText(String.valueOf(peel_color)));
-            tooltip.add(new LiteralText(String.valueOf(ModModelPredicateProvider.checkNbt(stack, world, (LivingEntity) (stack.getHolder()), "peel_color"))));
+            boolean b = peel_color != 3;
+            tooltip.add(new LiteralText(String.valueOf(b)));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
