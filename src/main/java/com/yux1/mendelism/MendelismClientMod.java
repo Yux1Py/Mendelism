@@ -9,8 +9,6 @@ import net.minecraft.client.render.RenderLayer;
 public class MendelismClientMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ModModelPredicateProvider.registerModModels();
-
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PEA_CROP, RenderLayer.getCutout());
     }
 }

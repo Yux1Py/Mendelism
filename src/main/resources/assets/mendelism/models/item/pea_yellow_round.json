@@ -1,5 +1,5 @@
 {
-  "parent": "mendelism:item/pea",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "mendelism:item/pea_yellow_round"
   }

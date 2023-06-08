@@ -2,7 +2,6 @@ package com.yux1.mendelism.block.custom;
 
 import com.yux1.mendelism.item.ModItems;
 import com.yux1.mendelism.util.ModTags;
-import com.yux1.mendelism.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
@@ -10,12 +9,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtInt;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -41,9 +38,12 @@ public class ModPeaCropBlock extends CropBlock {
     //
     //植株花色  红色·白色
     //果皮形状  饱满·皱缩
-    public static final IntProperty FLOWER_COLOR = IntProperty.of("flower_color", 1, 3);
-    public static final IntProperty PEEL_COLOR = IntProperty.of("peel_color", 1, 3);
-    public static final BooleanProperty TEST = BooleanProperty.of("test");
+    //种皮颜色  绿色·黄色
+    private static final IntProperty FLOWER_COLOR = IntProperty.of("flower_color", 1, 3);
+    private static final IntProperty PEEL_SHAPE = IntProperty.of("peel_shape", 1, 3);
+    private static final IntProperty SEED_COLOR = IntProperty.of("seed_color", 1, 3);
+
+    private static ItemStack seed;
 
     public ModPeaCropBlock(Settings settings) {
         super(settings);
@@ -53,13 +53,57 @@ public class ModPeaCropBlock extends CropBlock {
         //默认基因型为
         // 红色花色纯合子
         // 饱满果皮纯合子
-        setDefaultState(this.getStateManager().getDefaultState().with(FLOWER_COLOR, 1));
-        setDefaultState(this.getStateManager().getDefaultState().with(PEEL_COLOR, 1));
+        // 绿色种皮纯合子
+        setDefaultState(this.getStateManager().getDefaultState().with(FLOWER_COLOR, 3));
+        setDefaultState(this.getStateManager().getDefaultState().with(PEEL_SHAPE, 1));
+        setDefaultState(this.getStateManager().getDefaultState().with(SEED_COLOR, 1));
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        setDefaultState(this.getStateManager().getDefaultState().with(FLOWER_COLOR, 1));
+        //将种子基因型继承至植株
+        if (placer != null) {
+            if (itemStack.getNbt() != null){
+                /*setDefaultState(this.getStateManager().getDefaultState().with(FLOWER_COLOR, 3));
+                setDefaultState(this.getStateManager().getDefaultState().with(PEEL_SHAPE, 1));
+                setDefaultState(this.getStateManager().getDefaultState().with(SEED_COLOR, 3));*/
+                /*world.setBlockState(pos, state.with(FLOWER_COLOR, 3));
+                world.setBlockState(pos, state.with(PEEL_SHAPE, 3));
+                world.setBlockState(pos, state.with(SEED_COLOR, 3));*/
+            }
+        }
+
+        //保存一下种子方便掉落
+        if (placer != null) {
+            if (state.get(SEED_COLOR) == 1 || state.get(SEED_COLOR) == 2){
+                ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_ROUND);
+                NbtCompound nbt = new NbtCompound();
+                blockPropertyToPeaPodNbt(state, FLOWER_COLOR, nbt, "flower_color");
+                blockPropertyToPeaPodNbt(state, PEEL_SHAPE, nbt, "peel_shape");
+                blockPropertyToPeaPodNbt(state, SEED_COLOR, nbt, "seed_color");
+                newSeed.setNbt(nbt);
+                seed = newSeed;
+            }
+            else if (state.get(SEED_COLOR) == 3){
+                ItemStack newSeed = new ItemStack(ModItems.PEA_YELLOW_ROUND);
+                NbtCompound nbt = new NbtCompound();
+                blockPropertyToPeaPodNbt(state, FLOWER_COLOR, nbt, "flower_color");
+                blockPropertyToPeaPodNbt(state, PEEL_SHAPE, nbt, "peel_shape");
+                blockPropertyToPeaPodNbt(state, SEED_COLOR, nbt, "seed_color");
+                newSeed.setNbt(nbt);
+                seed = newSeed;
+            }
+            else {
+                ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_ROUND);
+                NbtCompound nbt = new NbtCompound();
+                blockPropertyToPeaPodNbt(state, FLOWER_COLOR, nbt, "flower_color");
+                blockPropertyToPeaPodNbt(state, PEEL_SHAPE, nbt, "peel_shape");
+                blockPropertyToPeaPodNbt(state, SEED_COLOR, nbt, "seed_color");
+                newSeed.setNbt(nbt);
+                seed = newSeed;
+            }
+        }
+
         super.onPlaced(world, pos, state, placer, itemStack);
     }
 
@@ -67,14 +111,12 @@ public class ModPeaCropBlock extends CropBlock {
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(HAS_STAMEN, HAS_POLLEN);
-        builder.add(FLOWER_COLOR, PEEL_COLOR);
-        builder.add(TEST);
+        builder.add(FLOWER_COLOR, PEEL_SHAPE, SEED_COLOR);
         super.appendProperties(builder);
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        ModUtils.print(world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10, false), state.get(FLOWER_COLOR).toString(), false);
         if (world.getBaseLightLevel(pos, 0) >= 9) {
             int i = this.getAge(state);
             //如果还没开花，正常生长
@@ -132,14 +174,13 @@ public class ModPeaCropBlock extends CropBlock {
     }
 
     //掉落豆荚的方法
-    private static void dropPeaPod(World world, BlockPos pos, BlockState state, PlayerEntity player){
-        if (!world.isClient()){
-            player.sendMessage(new LiteralText("掉落豆荚"), false);
-            ItemStack peaPod = new ItemStack(ModItems.PEA_POD);
-            NbtCompound nbt = new NbtCompound();
-            blockPropertyToPeaPodNbt(state, PEEL_COLOR, nbt, "peel_color");
-            peaPod.setNbt(nbt);
+    private void dropPeaPod(World world, BlockPos pos, BlockState state, PlayerEntity player){
+        if (this.getAge(state) == this.getMaxAge()){
+            ItemStack peaPod = choosePeaPodItem(world, pos, state, player);
             dropStack(world, pos, peaPod);
+        }
+        else {
+            dropStack(world, pos, seed);
         }
     }
 
@@ -163,4 +204,32 @@ public class ModPeaCropBlock extends CropBlock {
         }
 
     }
+
+    //将Crop的基因型继承至PeaPod
+    private static ItemStack choosePeaPodItem(World world, BlockPos pos, BlockState state, PlayerEntity player){
+        int peelShape = state.get(PEEL_SHAPE);
+        switch (peelShape){
+            case 1, 2:{
+                ItemStack peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
+                NbtCompound nbt = new NbtCompound();
+                blockPropertyToPeaPodNbt(state, FLOWER_COLOR, nbt, "flower_color");
+                blockPropertyToPeaPodNbt(state, PEEL_SHAPE, nbt, "peel_shape");
+                blockPropertyToPeaPodNbt(state, SEED_COLOR, nbt, "seed_color");
+                peaPod.setNbt(nbt);
+                return peaPod;
+            }
+            case 3:{
+                ItemStack peaPod = new ItemStack(ModItems.PEA_POD_GREEN_SHRUNKEN);
+                NbtCompound nbt = new NbtCompound();
+                blockPropertyToPeaPodNbt(state, FLOWER_COLOR, nbt, "flower_color");
+                blockPropertyToPeaPodNbt(state, PEEL_SHAPE, nbt, "peel_shape");
+                blockPropertyToPeaPodNbt(state, SEED_COLOR, nbt, "seed_color");
+                peaPod.setNbt(nbt);
+                return peaPod;
+            }
+            default:
+                return null;
+        }
+    }
+
 }

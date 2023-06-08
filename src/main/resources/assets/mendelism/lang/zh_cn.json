@@ -1,6 +1,10 @@
 {
   "item.mendelism.pea_pod": "豌豆荚",
+  "item.mendelism.pea_pod_green_plump": "豌豆荚",
+  "item.mendelism.pea_pod_green_shrunken": "豌豆荚",
   "item.mendelism.pea": "豌豆",
+  "item.mendelism.pea_green_round": "豌豆",
+  "item.mendelism.pea_yellow_round": "豌豆",
 
   "block.mendelism.pea_crop": "豌豆",
 

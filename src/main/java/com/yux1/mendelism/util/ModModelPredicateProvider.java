@@ -1,7 +1,9 @@
 package com.yux1.mendelism.util;
 
+import com.yux1.mendelism.Mendelism;
 import com.yux1.mendelism.item.ModItems;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.minecraft.block.LightBlock;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
@@ -9,6 +11,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -29,27 +33,9 @@ public class ModModelPredicateProvider {
     }*/
 
     private static void registerPeaPod(Item peaPod){
-        ModelPredicateProviderRegistry.register(peaPod, new Identifier("peel_color"),
-                new UnclampedModelPredicateProvider(){
-
-                    @Override
-                    public float unclampedCall(ItemStack itemStack, @Nullable ClientWorld clientWorld, @Nullable LivingEntity livingEntity, int i) {
-                        Entity entity = livingEntity != null ? livingEntity : itemStack.getHolder();
-                        if (entity == null) {
-                            return 1.0f;
-                        } else {
-                            if (clientWorld == null && ((Entity)entity).world instanceof ClientWorld) {
-                                clientWorld = (ClientWorld)((Entity)entity).world;
-                            }
-
-                            if (clientWorld == null) {
-                                return 1.0f;
-                            } else {
-                                int seed_color = itemStack.getNbt().getInt("seed_color");
-                                boolean b = seed_color != 3;
-                                return b ? 1.0f : 0.0f;}
-                        }
-                    }
+        ModelPredicateProviderRegistry.register(peaPod, new Identifier(Mendelism.MOD_ID, "peel_color"),
+                (stack, world, entity, seed) -> {
+                    return 1.0f;
                 });
     }
 
@@ -57,18 +43,4 @@ public class ModModelPredicateProvider {
         //registerPea();
         registerPeaPod(ModItems.PEA_POD);
     }
-
-    public static boolean checkNbt(ItemStack stack, World world, LivingEntity entity, int seed, String nbtKey){
-        if (stack.hasNbt()){
-            if (entity != null){
-                assert stack.getNbt() != null;
-                int nbtInt =  stack.getNbt().getInt(nbtKey);
-                if (nbtInt == 3){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
 }
