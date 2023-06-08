@@ -2,7 +2,6 @@ package com.yux1.mendelism;
 
 import com.yux1.mendelism.block.ModBlocks;
 import com.yux1.mendelism.item.ModItems;
-import com.yux1.mendelism.util.ModModelPredicateProvider;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

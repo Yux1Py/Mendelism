@@ -16,10 +16,20 @@ public class ModItems {
     public static final Item PEA_POD = registerItem("pea_pod",
             new ModPeaPodItem(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
 
+    //绿色饱满豌豆荚
     public static final Item PEA_POD_GREEN_PLUMP = registerItem("pea_pod_green_plump",
             new ModPeaPodItem(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
 
+    //绿色皱缩豌豆荚
     public static final Item PEA_POD_GREEN_SHRUNKEN = registerItem("pea_pod_green_shrunken",
+            new ModPeaPodItem(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+
+    //黄色饱满豌豆荚
+    public static final Item PEA_POD_YELLOW_PLUMP = registerItem("pea_pod_yellow_plump",
+            new ModPeaPodItem(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+
+    //黄色饱满豌豆荚
+    public static final Item PEA_POD_YELLOW_SHRUNKEN = registerItem("pea_pod_yellow_shrunken",
             new ModPeaPodItem(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
 
 
@@ -27,11 +37,23 @@ public class ModItems {
             new ModPeaItem(ModBlocks.PEA_CROP,
                     new FabricItemSettings().group(ModItemGroup.MENDELISM)));
 
+    //绿色饱满
     public static final Item PEA_GREEN_ROUND = registerItem("pea_green_round",
             new ModPeaItem(ModBlocks.PEA_CROP,
                     new FabricItemSettings().group(ModItemGroup.MENDELISM)));
 
+    //绿色皱缩
+    public static final Item PEA_GREEN_WRINKLED = registerItem("pea_green_wrinkled",
+            new ModPeaItem(ModBlocks.PEA_CROP,
+                    new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+
+    //黄色饱满
     public static final Item PEA_YELLOW_ROUND = registerItem("pea_yellow_round",
+            new ModPeaItem(ModBlocks.PEA_CROP,
+                    new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+
+    //黄色皱缩
+    public static final Item PEA_YELLOW_WRINKLED = registerItem("pea_yellow_wrinkled",
             new ModPeaItem(ModBlocks.PEA_CROP,
                     new FabricItemSettings().group(ModItemGroup.MENDELISM)));
 

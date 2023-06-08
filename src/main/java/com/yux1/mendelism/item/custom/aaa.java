@@ -18,6 +18,10 @@ public class aaa extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack pea = new ItemStack(ModItems.PEA_YELLOW_ROUND);
         NbtCompound nbt = new NbtCompound();
+        nbt.putInt("flower_color", 3);
+        nbt.putInt("peel_shape", 3);
+        nbt.putInt("peel_color", 3);
+        nbt.putInt("seed_shape", 3);
         nbt.putInt("seed_color", 3);
         pea.setNbt(nbt);
         user.giveItemStack(pea);

@@ -2,9 +2,13 @@
   "item.mendelism.pea_pod": "Pea Pod",
   "item.mendelism.pea_pod_green_plump": "Pea Pod",
   "item.mendelism.pea_pod_green_shrunken": "Pea Pod",
+  "item.mendelism.pea_pod_yellow_plump": "Pea Pod",
+  "item.mendelism.pea_pod_yellow_shrunken": "Pea Pod",
   "item.mendelism.pea": "Pea",
   "item.mendelism.pea_green_round": "Pea",
+  "item.mendelism.pea_green_wrinkled": "Pea",
   "item.mendelism.pea_yellow_round": "Pea",
+  "item.mendelism.pea_yellow_wrinkled": "Pea",
 
   "block.mendelism.pea_crop": "Pea",
 

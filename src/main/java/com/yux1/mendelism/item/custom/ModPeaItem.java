@@ -24,16 +24,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ModPeaItem extends AliasedBlockItem {
+public class ModPeaItem extends Item {
 
     private static Block cropBlock = null;
 
     public ModPeaItem(Block block, Settings settings) {
-        super(block, settings);
+        super(settings);
         cropBlock = block;
     }
 
-    /*@Override
+    @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         World world = context.getWorld();
         BlockPos pos = context.getBlockPos();
@@ -53,11 +53,15 @@ public class ModPeaItem extends AliasedBlockItem {
                     SoundCategory.BLOCKS, 1f, 1f);
         }
         return super.useOnBlock(context);
-    }*/
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (stack.getNbt() != null) {
+            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("flower_color"))));
+            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_shape"))));
+            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_color"))));
+            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_shape"))));
             tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_color"))));
         }
         super.appendTooltip(stack, world, tooltip, context);
