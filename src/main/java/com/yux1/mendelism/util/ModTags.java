@@ -10,6 +10,7 @@ public class ModTags {
     public static class Items{
 
         public static final TagKey<Item> EMASCULATION = createCommonTag("emasculation");
+        public static final TagKey<Item> BRUSH = createCommonTag("brush");
 
         private static TagKey<Item> createTag(String name){
             return TagKey.of(Registry.ITEM_KEY, new Identifier(Mendelism.MOD_ID, name));

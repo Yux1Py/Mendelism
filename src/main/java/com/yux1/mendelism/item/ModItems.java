@@ -2,6 +2,7 @@ package com.yux1.mendelism.item;
 
 import com.yux1.mendelism.Mendelism;
 import com.yux1.mendelism.block.ModBlocks;
+import com.yux1.mendelism.item.custom.FeatherBrushItem;
 import com.yux1.mendelism.item.custom.ModPeaItem;
 import com.yux1.mendelism.item.custom.ModPeaPodItem;
 import com.yux1.mendelism.item.custom.aaa;
@@ -61,6 +62,11 @@ public class ModItems {
             new ModPeaItem(ModBlocks.PEA_CROP,
                     new FabricItemSettings().food(ModFoodComponents.PEA)
                             .group(ModItemGroup.MENDELISM)));
+
+    //羽毛刷
+    public static final Item FEATHER_BRUSH = registerItem("feather_brush",
+            new FeatherBrushItem(new FabricItemSettings().maxCount(1)
+                    .group(ModItemGroup.MENDELISM)));
 
     public static final Item AAA = registerItem("aaa",
             new aaa(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
