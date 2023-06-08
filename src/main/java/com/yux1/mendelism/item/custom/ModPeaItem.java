@@ -44,8 +44,8 @@ public class ModPeaItem extends Item {
                 ItemStack pea = player.getMainHandStack();
                 ModPeaCropBlock cropBlock = (ModPeaCropBlock) ModBlocks.PEA_CROP;
                 BlockState cropBlockState = cropBlock.getDefaultState();
-                world.setBlockState(pos.up(), cropBlockState);
                 cropBlock.onPlaced(world, pos.up(), cropBlockState, player, pea);
+                world.setBlockState(pos.up(), cropBlockState);
                 pea.setCount(pea.getCount() - 1);
             }
             player.swingHand(Hand.MAIN_HAND);

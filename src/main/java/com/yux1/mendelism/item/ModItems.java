@@ -35,27 +35,32 @@ public class ModItems {
 
     public static final Item PEA = registerItem("pea",
             new ModPeaItem(ModBlocks.PEA_CROP,
-                    new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+                    new FabricItemSettings().food(ModFoodComponents.PEA)
+                            .group(ModItemGroup.MENDELISM)));
 
     //绿色饱满
     public static final Item PEA_GREEN_ROUND = registerItem("pea_green_round",
             new ModPeaItem(ModBlocks.PEA_CROP,
-                    new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+                    new FabricItemSettings().food(ModFoodComponents.PEA)
+                            .group(ModItemGroup.MENDELISM)));
 
     //绿色皱缩
     public static final Item PEA_GREEN_WRINKLED = registerItem("pea_green_wrinkled",
             new ModPeaItem(ModBlocks.PEA_CROP,
-                    new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+                    new FabricItemSettings().food(ModFoodComponents.PEA)
+                            .group(ModItemGroup.MENDELISM)));
 
     //黄色饱满
     public static final Item PEA_YELLOW_ROUND = registerItem("pea_yellow_round",
             new ModPeaItem(ModBlocks.PEA_CROP,
-                    new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+                    new FabricItemSettings().food(ModFoodComponents.PEA)
+                            .group(ModItemGroup.MENDELISM)));
 
     //黄色皱缩
     public static final Item PEA_YELLOW_WRINKLED = registerItem("pea_yellow_wrinkled",
             new ModPeaItem(ModBlocks.PEA_CROP,
-                    new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+                    new FabricItemSettings().food(ModFoodComponents.PEA)
+                            .group(ModItemGroup.MENDELISM)));
 
     public static final Item AAA = registerItem("aaa",
             new aaa(new FabricItemSettings().group(ModItemGroup.MENDELISM)));

@@ -81,7 +81,7 @@ public class ModPeaPodItem extends Item {
             }
         }
         //绿色皱缩
-        if (peaPodSeedShape == 3 && peaPodSeedColor != 3){
+        else if (peaPodSeedShape == 3 && peaPodSeedColor != 3){
             for (int i = 0; i < count; i++){
                 ItemStack pea = new ItemStack(ModItems.PEA_GREEN_WRINKLED);
                 int newFlowerColor = chooseGene(peaPod, "flower_color");
