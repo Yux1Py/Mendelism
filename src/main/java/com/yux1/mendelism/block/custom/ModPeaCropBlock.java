@@ -53,8 +53,7 @@ public class ModPeaCropBlock extends CropBlock {
     public ModPeaCropBlock(Settings settings) {
         super(settings);
         //默认有雄蕊，无花粉
-        setDefaultState(this.getStateManager().getDefaultState().with(HAS_STAMEN, true));
-        setDefaultState(this.getStateManager().getDefaultState().with(HAS_POLLEN, false));
+
         //默认基因型为
         // 红色花色纯合子
         // 饱满果皮纯合子
@@ -62,6 +61,9 @@ public class ModPeaCropBlock extends CropBlock {
         // 饱满种皮纯合子
         // 绿色种皮纯合子
         setDefaultState(this.getStateManager().getDefaultState()
+                .with(HAS_STAMEN, true)
+                .with(HAS_POLLEN, false)
+
                 .with(FLOWER_COLOR, 1)
                 .with(PEEL_SHAPE, 1)
                 .with(PEEL_COLOR, 1)
@@ -74,6 +76,8 @@ public class ModPeaCropBlock extends CropBlock {
 
         //将种子基因型继承至植株
         setDefaultState(this.getStateManager().getDefaultState()
+                .with(HAS_STAMEN, true)
+                .with(HAS_POLLEN, false)
                 .with(FLOWER_COLOR, itemStack.getNbt().getInt("flower_color"))
                 .with(PEEL_SHAPE, itemStack.getNbt().getInt("peel_shape"))
                 .with(PEEL_COLOR, itemStack.getNbt().getInt("peel_color"))
@@ -188,11 +192,6 @@ public class ModPeaCropBlock extends CropBlock {
     //             ，若不是剪刀且已成熟则掉落豆荚
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        //若已去雄，则阻止玩家催熟
-        if (!state.get(HAS_STAMEN)){
-            return ActionResult.SUCCESS;
-        }
-
         //若未去雄，顺利执行其他操作
         //去雄
         if (Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.EMASCULATION)){
@@ -207,6 +206,10 @@ public class ModPeaCropBlock extends CropBlock {
                 }
             }
         }
+        //若已去雄，则阻止玩家催熟
+        else if (!state.get(HAS_STAMEN) && !(Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.BRUSH))){
+            return ActionResult.SUCCESS;
+        }
         //取花粉 或 授粉
         else if (Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.BRUSH)){
             ItemStack brush = player.getMainHandStack();
@@ -214,11 +217,15 @@ public class ModPeaCropBlock extends CropBlock {
                 boolean bHasPollen = brush.getNbt().getBoolean("has_pollen");
 //            if (!bHasPollen){player.sendMessage(new LiteralText("www"), false);}
                 //若刷子中未存储花粉 并且 植株未进行授粉或去雄
-
+                if (!world.isClient()){
+                    player.sendMessage(new LiteralText(String.valueOf(state.get(HAS_POLLEN))), false);
+                    player.sendMessage(new LiteralText(String.valueOf(state.get(HAS_STAMEN))), false);
+                }
 
                 //问题在这边
                 if (!bHasPollen && !state.get(HAS_POLLEN) && state.get(HAS_STAMEN)){
                     player.sendMessage(new LiteralText("取花粉"), false);
+                    player.swingHand(Hand.MAIN_HAND);
                     NbtCompound nbt = new NbtCompound();
                     blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
                     blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
@@ -231,11 +238,12 @@ public class ModPeaCropBlock extends CropBlock {
                 //若刷子中存储了花粉 并且 植株未进行授粉且已去雄
                 else if (bHasPollen && !state.get(HAS_POLLEN) && !state.get(HAS_STAMEN)){
                     player.sendMessage(new LiteralText("授粉"), false);
+                    player.swingHand(Hand.MAIN_HAND);
                     changeGenotype(state, world, pos, player, hand, hit, brush);
                     NbtCompound nbt = new NbtCompound();
                     nbt.putBoolean("has_pollen", false);
                     brush.setNbt(nbt);
-                    setDefaultState(this.getStateManager().getDefaultState().with(HAS_POLLEN, true));
+                    world.setBlockState(pos, state.with(HAS_POLLEN, true));
                 }
             }
         }
