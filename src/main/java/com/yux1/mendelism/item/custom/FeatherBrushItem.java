@@ -10,6 +10,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +53,12 @@ public class FeatherBrushItem extends Item {
     public void appendTooltip(ItemStack brush, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if (brush.hasNbt()){
             boolean bHasPollen = brush.getNbt().getBoolean("has_pollen");
-            tooltip.add(new LiteralText(String.valueOf(bHasPollen)));
+            if (bHasPollen){
+                tooltip.add(new TranslatableText("item.mendelism.tooltip.has_pollen"));
+            }
+            else {
+                tooltip.add(new TranslatableText("item.mendelism.tooltip.has_not_pollen"));
+            }
         }
         super.appendTooltip(brush, world, tooltip, context);
     }

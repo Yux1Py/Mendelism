@@ -13,5 +13,10 @@
 
   "block.mendelism.pea_crop": "Pea",
 
+  "item.mendelism.tooltip.has_pollen": "Has Pollen",
+  "item.mendelism.tooltip.has_not_pollen": "Has No Pollen",
+  "item.mendelism.tooltip.need_machine": "You Need A XXX to Check out the Genotype",
+  "item.mendelism.tooltip.shift": "Press §eSHIFT§r For Genotype",
+
   "itemGroup.mendelism.mendelism": "Mendelism"
 }

@@ -2,6 +2,7 @@ package com.yux1.mendelism.block.custom;
 
 import com.yux1.mendelism.item.ModItems;
 import com.yux1.mendelism.util.ModTags;
+import com.yux1.mendelism.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
@@ -195,19 +196,18 @@ public class ModPeaCropBlock extends CropBlock {
         //若未去雄，顺利执行其他操作
         //去雄
         if (Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.EMASCULATION)){
-            if (!world.isClient()){
-                if (state.get(HAS_STAMEN)){
-                    //减少耐久
-                    if (!player.isCreative()){
-                        player.getMainHandStack().decrement(1);
-                    }
-                    player.swingHand(Hand.MAIN_HAND);
-                    world.setBlockState(pos, state.with(HAS_STAMEN, false));
+            if (state.get(HAS_STAMEN)){
+                //减少耐久
+                if (!player.isCreative()){
+                    player.getMainHandStack().decrement(1);
                 }
+                ModUtils.print(world, player, "去雄", false);
+                player.swingHand(Hand.MAIN_HAND);
+                world.setBlockState(pos, state.with(HAS_STAMEN, false));
             }
         }
         //若已去雄，则阻止玩家催熟
-        else if (!state.get(HAS_STAMEN) && !(Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.BRUSH))){
+        else if (!state.get(HAS_STAMEN) && !state.get(HAS_POLLEN) && !(Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.BRUSH))){
             return ActionResult.SUCCESS;
         }
         //取花粉 或 授粉
@@ -215,16 +215,13 @@ public class ModPeaCropBlock extends CropBlock {
             ItemStack brush = player.getMainHandStack();
             if (brush.hasNbt()){
                 boolean bHasPollen = brush.getNbt().getBoolean("has_pollen");
-//            if (!bHasPollen){player.sendMessage(new LiteralText("www"), false);}
                 //若刷子中未存储花粉 并且 植株未进行授粉或去雄
                 if (!world.isClient()){
-                    player.sendMessage(new LiteralText(String.valueOf(state.get(HAS_POLLEN))), false);
                     player.sendMessage(new LiteralText(String.valueOf(state.get(HAS_STAMEN))), false);
+                    player.sendMessage(new LiteralText(String.valueOf(state.get(HAS_POLLEN))), false);
                 }
-
-                //问题在这边
                 if (!bHasPollen && !state.get(HAS_POLLEN) && state.get(HAS_STAMEN)){
-                    player.sendMessage(new LiteralText("取花粉"), false);
+                    ModUtils.print(world, player, "取花粉", false);
                     player.swingHand(Hand.MAIN_HAND);
                     NbtCompound nbt = new NbtCompound();
                     blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
@@ -237,12 +234,20 @@ public class ModPeaCropBlock extends CropBlock {
                 }
                 //若刷子中存储了花粉 并且 植株未进行授粉且已去雄
                 else if (bHasPollen && !state.get(HAS_POLLEN) && !state.get(HAS_STAMEN)){
-                    player.sendMessage(new LiteralText("授粉"), false);
+                    ModUtils.print(world, player, "授粉", false);
                     player.swingHand(Hand.MAIN_HAND);
                     changeGenotype(state, world, pos, player, hand, hit, brush);
                     NbtCompound nbt = new NbtCompound();
                     nbt.putBoolean("has_pollen", false);
                     brush.setNbt(nbt);
+                    setDefaultState(this.getStateManager().getDefaultState()
+                            .with(HAS_STAMEN, false)
+                            .with(HAS_POLLEN, true)
+                            .with(FLOWER_COLOR, state.get(FLOWER_COLOR))
+                            .with(PEEL_SHAPE, state.get(PEEL_SHAPE))
+                            .with(PEEL_COLOR, state.get(PEEL_COLOR))
+                            .with(SEED_SHAPE, state.get(SEED_SHAPE))
+                            .with(SEED_COLOR, state.get(SEED_COLOR)));
                     world.setBlockState(pos, state.with(HAS_POLLEN, true));
                 }
             }

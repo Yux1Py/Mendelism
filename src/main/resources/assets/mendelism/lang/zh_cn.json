@@ -13,5 +13,10 @@
 
   "block.mendelism.pea_crop": "豌豆植株",
 
+  "item.mendelism.tooltip.has_pollen": "有花粉",
+  "item.mendelism.tooltip.has_not_pollen": "无花粉",
+  "item.mendelism.tooltip.need_machine": "你需要一个XXX以查看基因型",
+  "item.mendelism.tooltip.shift": "按下§eSHIFT§r查看基因型",
+
   "itemGroup.mendelism.mendelism": "孟德尔主义"
 }

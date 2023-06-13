@@ -1,6 +1,7 @@
 package com.yux1.mendelism.item.custom;
 
 import com.yux1.mendelism.item.ModItems;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -31,13 +33,27 @@ public class ModPeaPodItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (stack.getNbt() != null) {
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("flower_color"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_shape"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_color"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_shape"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_color"))));
+
+        if (true){
+            if(!Screen.hasShiftDown())
+            {
+                tooltip.add(new TranslatableText("item.mendelism.tooltip.shift"));
+            }
+            else
+            {
+                if (stack.getNbt() != null) {
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("flower_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_shape"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_shape"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_color"))));
+                }
+            }
         }
+        else {
+            tooltip.add(new TranslatableText("item.mendelism.tooltip.need_machine"));
+        }
+
         super.appendTooltip(stack, world, tooltip, context);
     }
 
@@ -50,26 +66,16 @@ public class ModPeaPodItem extends Item {
         user.setStackInHand(hand, peaPod);
         user.swingHand(hand);
         //选择豌豆颜色并输入nbt
-        int peaPodSeedColor;
-        int peaPodSeedShape;
-        if (peaPod.getNbt() != null) {
-            peaPodSeedColor = peaPod.getNbt().getInt("seed_color");
-            peaPodSeedShape = peaPod.getNbt().getInt("seed_shape");
-        }
-        else {
-            peaPodSeedColor = 1;
-            peaPodSeedShape = 1;
-        };
-
-        //绿色饱满
-        if (peaPodSeedShape != 3 && peaPodSeedColor != 3){
-            for (int i = 0; i < count; i++){
+        assert peaPod.getNbt() != null;
+        for (int i = 0; i < count; i++){
+            int newFlowerColor = chooseGene(peaPod, "flower_color");
+            int newPeelShape = chooseGene(peaPod, "peel_shape");
+            int newPeelColor = chooseGene(peaPod, "peel_color");
+            int newSeedShape = chooseGene(peaPod, "seed_shape");
+            int newSeedColor = chooseGene(peaPod, "seed_color");
+            //绿色饱满
+            if (newSeedShape != 3 && newSeedColor != 3){
                 ItemStack pea = new ItemStack(ModItems.PEA_GREEN_ROUND);
-                int newFlowerColor = chooseGene(peaPod, "flower_color");
-                int newPeelShape = chooseGene(peaPod, "peel_shape");
-                int newPeelColor = chooseGene(peaPod, "peel_color");
-                int newSeedShape = chooseGene(peaPod, "seed_shape");
-                int newSeedColor = chooseGene(peaPod, "seed_color");
                 NbtCompound nbtCompound = new NbtCompound();
                 nbtCompound.putInt("flower_color", newFlowerColor);
                 nbtCompound.putInt("peel_shape", newPeelShape);
@@ -79,16 +85,9 @@ public class ModPeaPodItem extends Item {
                 pea.setNbt(nbtCompound);
                 user.giveItemStack(pea);
             }
-        }
-        //绿色皱缩
-        else if (peaPodSeedShape == 3 && peaPodSeedColor != 3){
-            for (int i = 0; i < count; i++){
+            //绿色皱缩
+            else if (newSeedShape == 3 && newSeedColor != 3){
                 ItemStack pea = new ItemStack(ModItems.PEA_GREEN_WRINKLED);
-                int newFlowerColor = chooseGene(peaPod, "flower_color");
-                int newPeelShape = chooseGene(peaPod, "peel_shape");
-                int newPeelColor = chooseGene(peaPod, "peel_color");
-                int newSeedShape = chooseGene(peaPod, "seed_shape");
-                int newSeedColor = chooseGene(peaPod, "seed_color");
                 NbtCompound nbtCompound = new NbtCompound();
                 nbtCompound.putInt("flower_color", newFlowerColor);
                 nbtCompound.putInt("peel_shape", newPeelShape);
@@ -98,16 +97,9 @@ public class ModPeaPodItem extends Item {
                 pea.setNbt(nbtCompound);
                 user.giveItemStack(pea);
             }
-        }
-        //黄色饱满
-        else if (peaPodSeedShape != 3 && peaPodSeedColor == 3){
-            for (int i = 0; i < count; i++){
+            //黄色饱满
+            else if (newSeedShape != 3 && newSeedColor == 3){
                 ItemStack pea = new ItemStack(ModItems.PEA_YELLOW_ROUND);
-                int newFlowerColor = chooseGene(peaPod, "flower_color");
-                int newPeelShape = chooseGene(peaPod, "peel_shape");
-                int newPeelColor = chooseGene(peaPod, "peel_color");
-                int newSeedShape = chooseGene(peaPod, "seed_shape");
-                int newSeedColor = chooseGene(peaPod, "seed_color");
                 NbtCompound nbtCompound = new NbtCompound();
                 nbtCompound.putInt("flower_color", newFlowerColor);
                 nbtCompound.putInt("peel_shape", newPeelShape);
@@ -117,16 +109,9 @@ public class ModPeaPodItem extends Item {
                 pea.setNbt(nbtCompound);
                 user.giveItemStack(pea);
             }
-        }
-        //黄色皱缩
-        else if (peaPodSeedShape == 3 && peaPodSeedColor == 3){
-            for (int i = 0; i < count; i++){
+            //黄色皱缩
+            else if (newSeedShape == 3 && newSeedColor == 3){
                 ItemStack pea = new ItemStack(ModItems.PEA_YELLOW_WRINKLED);
-                int newFlowerColor = chooseGene(peaPod, "flower_color");
-                int newPeelShape = chooseGene(peaPod, "peel_shape");
-                int newPeelColor = chooseGene(peaPod, "peel_color");
-                int newSeedShape = chooseGene(peaPod, "seed_shape");
-                int newSeedColor = chooseGene(peaPod, "seed_color");
                 NbtCompound nbtCompound = new NbtCompound();
                 nbtCompound.putInt("flower_color", newFlowerColor);
                 nbtCompound.putInt("peel_shape", newPeelShape);
@@ -136,25 +121,9 @@ public class ModPeaPodItem extends Item {
                 pea.setNbt(nbtCompound);
                 user.giveItemStack(pea);
             }
+
         }
-        else {
-            for (int i = 0; i < count; i++){
-                ItemStack pea = new ItemStack(ModItems.PEA_GREEN_ROUND);
-                int newFlowerColor = chooseGene(peaPod, "flower_color");
-                int newPeelShape = chooseGene(peaPod, "peel_shape");
-                int newPeelColor = chooseGene(peaPod, "peel_color");
-                int newSeedShape = chooseGene(peaPod, "seed_shape");
-                int newSeedColor = chooseGene(peaPod, "seed_color");
-                NbtCompound nbtCompound = new NbtCompound();
-                nbtCompound.putInt("flower_color", newFlowerColor);
-                nbtCompound.putInt("peel_shape", newPeelShape);
-                nbtCompound.putInt("peel_color", newPeelColor);
-                nbtCompound.putInt("seed_shape", newSeedShape);
-                nbtCompound.putInt("seed_color", newSeedColor);
-                pea.setNbt(nbtCompound);
-                user.giveItemStack(pea);
-            }
-        }
+
     }
 
     private static int chooseGene(ItemStack peaPod, String key){

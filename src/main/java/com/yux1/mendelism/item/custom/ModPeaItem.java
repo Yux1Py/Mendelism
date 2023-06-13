@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AliasedBlockItem;
@@ -16,6 +17,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -57,12 +59,24 @@ public class ModPeaItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (stack.getNbt() != null) {
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("flower_color"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_shape"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_color"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_shape"))));
-            tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_color"))));
+        if (true){
+            if(!Screen.hasShiftDown())
+            {
+                tooltip.add(new TranslatableText("item.mendelism.tooltip.shift"));
+            }
+            else
+            {
+                if (stack.getNbt() != null) {
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("flower_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_shape"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_shape"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_color"))));
+                }
+            }
+        }
+        else {
+            tooltip.add(new TranslatableText("item.mendelism.tooltip.need_machine"));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }

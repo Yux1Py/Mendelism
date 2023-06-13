@@ -9,6 +9,9 @@ import net.minecraft.util.registry.Registry;
 public class ModTags {
     public static class Items{
 
+        public static final TagKey<Item> GREEN_PEA = createTag("green_pea");
+        public static final TagKey<Item> YELLOW_PEA = createTag("yellow_pea");
+
         public static final TagKey<Item> EMASCULATION = createCommonTag("emasculation");
         public static final TagKey<Item> BRUSH = createCommonTag("brush");
 
