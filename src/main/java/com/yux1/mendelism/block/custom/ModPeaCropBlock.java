@@ -175,7 +175,7 @@ public class ModPeaCropBlock extends CropBlock {
                 }
                 //如果有花粉输入（去雄后），继续生长并输入花粉基因
                 else if (!state.get(HAS_STAMEN) && state.get(HAS_POLLEN)){
-
+                    cropGrow(this, i, state, world, pos, random);
                 }
             }
         }
@@ -199,7 +199,7 @@ public class ModPeaCropBlock extends CropBlock {
             if (state.get(HAS_STAMEN)){
                 //减少耐久
                 if (!player.isCreative()){
-                    player.getMainHandStack().decrement(1);
+                    player.getMainHandStack().setDamage(player.getMainHandStack().getMaxDamage() - 1);
                 }
                 ModUtils.print(world, player, "去雄", false);
                 player.swingHand(Hand.MAIN_HAND);
@@ -233,22 +233,13 @@ public class ModPeaCropBlock extends CropBlock {
                     brush.setNbt(nbt);
                 }
                 //若刷子中存储了花粉 并且 植株未进行授粉且已去雄
-                else if (bHasPollen && !state.get(HAS_POLLEN) && !state.get(HAS_STAMEN)){
+                else if (bHasPollen && !state.get(HAS_POLLEN) && !state.get(HAS_STAMEN) && this.getAge(state) > 4){
                     ModUtils.print(world, player, "授粉", false);
                     player.swingHand(Hand.MAIN_HAND);
                     changeGenotype(state, world, pos, player, hand, hit, brush);
                     NbtCompound nbt = new NbtCompound();
                     nbt.putBoolean("has_pollen", false);
                     brush.setNbt(nbt);
-                    setDefaultState(this.getStateManager().getDefaultState()
-                            .with(HAS_STAMEN, false)
-                            .with(HAS_POLLEN, true)
-                            .with(FLOWER_COLOR, state.get(FLOWER_COLOR))
-                            .with(PEEL_SHAPE, state.get(PEEL_SHAPE))
-                            .with(PEEL_COLOR, state.get(PEEL_COLOR))
-                            .with(SEED_SHAPE, state.get(SEED_SHAPE))
-                            .with(SEED_COLOR, state.get(SEED_COLOR)));
-                    world.setBlockState(pos, state.with(HAS_POLLEN, true));
                 }
             }
         }
@@ -398,21 +389,24 @@ public class ModPeaCropBlock extends CropBlock {
 
 
         setDefaultState(this.getStateManager().getDefaultState()
+                .with(HAS_STAMEN, false)
+                .with(HAS_POLLEN, true)
                 .with(FLOWER_COLOR, newFlowerColor)
                 .with(PEEL_SHAPE, newPeelShape)
                 .with(PEEL_COLOR, newPeelColor)
                 .with(SEED_SHAPE, newSeedShape)
                 .with(SEED_COLOR, newSeedColor));
+        world.setBlockState(pos, state.with(HAS_POLLEN, true));
     }
 
     private int calculateGene(int gene01, int gene02){
         int geneAddon = gene01 + gene02;
         Random random = new Random();
         int possibility = random.nextInt(1, 5);
-        if (geneAddon == 2){
+        if (gene01 == 1 && gene02 == 1){
             return 1;
         }
-        else if (geneAddon == 3){
+        else if ((gene01 == 1 && gene02 == 2) || (gene01 == 2 && gene02 == 1)){
             if (possibility < 3){
                 return 1;
             }
@@ -420,7 +414,7 @@ public class ModPeaCropBlock extends CropBlock {
                 return 2;
             }
         }
-        else if (geneAddon == 5){
+        else if ((gene01 == 3 && gene02 == 2) || (gene01 == 2 && gene02 == 3)){
             if (possibility < 3){
                 return 3;
             }
@@ -428,10 +422,10 @@ public class ModPeaCropBlock extends CropBlock {
                 return 2;
             }
         }
-        else if (geneAddon == 6){
+        else if (gene01 == 3 && gene02 == 3){
             return 3;
         }
-        else if (geneAddon == 4 && gene01 == 2 && gene02 == 2){
+        else if (gene01 == 2 && gene02 == 2){
             if (possibility == 1){
                 return 1;
             }
@@ -442,8 +436,8 @@ public class ModPeaCropBlock extends CropBlock {
                 return 2;
             }
         }
-        else if ((geneAddon == 4 && gene01 == 1 && gene02 == 3) ||
-                (geneAddon == 4 && gene01 == 3 && gene02 == 1)){
+        else if ((gene01 == 1 && gene02 == 3) ||
+                (gene01 == 3 && gene02 == 1)){
             return 2;
         }
         else {

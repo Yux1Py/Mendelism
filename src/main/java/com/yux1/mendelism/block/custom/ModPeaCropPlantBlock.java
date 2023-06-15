@@ -30,10 +30,13 @@ public class ModPeaCropPlantBlock extends PlantBlock {
         this.genotype = genotype;
     }
 
+
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        world.breakBlock(pos, false, player);
+        player.swingHand(Hand.MAIN_HAND);
         dropPeaPod(world, pos, state, player);
-        return super.onUse(state, world, pos, player, hand, hit);
+        return ActionResult.SUCCESS;
     }
 
     @Override

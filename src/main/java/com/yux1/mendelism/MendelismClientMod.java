@@ -9,5 +9,6 @@ public class MendelismClientMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PEA_CROP, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PEA_CROP_PLANT, RenderLayer.getCutout());
     }
 }

@@ -11,7 +11,8 @@
   "item.mendelism.pea_yellow_wrinkled": "Pea",
   "item.mendelism.feather_brush": "Feather Brush",
 
-  "block.mendelism.pea_crop": "Pea",
+  "block.mendelism.pea_crop": "Pea Crop",
+  "block.mendelism.pea_crop_plant": "Wild Type Pea Plant",
 
   "item.mendelism.tooltip.has_pollen": "Has Pollen",
   "item.mendelism.tooltip.has_not_pollen": "Has No Pollen",

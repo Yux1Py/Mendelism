@@ -12,6 +12,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,14 @@ public class FeatherBrushItem extends Item {
     }
 
     @Override
+    public boolean hasGlint(ItemStack stack) {
+        if (stack.getNbt() != null) {
+            return stack.getNbt().getBoolean("has_pollen");
+        }
+        else return false;
+    }
+
+    @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         ItemStack brush = context.getStack();
         if (!brush.hasNbt()){
@@ -44,6 +53,7 @@ public class FeatherBrushItem extends Item {
             NbtCompound nbt = new NbtCompound();
             nbt.putBoolean("has_pollen", false);
             brush.setNbt(nbt);
+            context.getPlayer().swingHand(Hand.MAIN_HAND);
             context.getPlayer().sendMessage(new LiteralText("清理羽毛刷"), false);
         }
         return super.useOnBlock(context);
