@@ -42,11 +42,28 @@ public class ModPeaPodItem extends Item {
             else
             {
                 if (stack.getNbt() != null) {
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("flower_color"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_shape"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_color"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_shape"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getBoolean("has_pollen"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_flower_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_peel_shape"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_peel_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_seed_shape"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_seed_color"))));
+                }
+                else {
+                    if (stack.getItem() == ModItems.PEA_POD){
+                        NbtCompound nbt = new NbtCompound();
+                        nbt.putBoolean("has_pollen", false);
+                        nbt.putInt("b_flower_color", 1);
+                        nbt.putInt("b_peel_shape", 1);
+                        nbt.putInt("b_peel_color", 1);
+                        nbt.putInt("b_seed_shape", 1);
+                        nbt.putInt("b_seed_color", 1);
+                        nbt.putInt("p_flower_color", 1);
+                        nbt.putInt("p_peel_shape", 1);
+                        nbt.putInt("p_peel_color", 1);
+                        nbt.putInt("p_seed_shape", 1);
+                        nbt.putInt("p_seed_color", 1);
+                    }
                 }
             }
         }
@@ -68,11 +85,11 @@ public class ModPeaPodItem extends Item {
         //选择豌豆颜色并输入nbt
         assert peaPod.getNbt() != null;
         for (int i = 0; i < count; i++){
-            int newFlowerColor = chooseGene(peaPod, "flower_color");
-            int newPeelShape = chooseGene(peaPod, "peel_shape");
-            int newPeelColor = chooseGene(peaPod, "peel_color");
-            int newSeedShape = chooseGene(peaPod, "seed_shape");
-            int newSeedColor = chooseGene(peaPod, "seed_color");
+            int newFlowerColor = chooseGene(peaPod, "b_flower_color", "p_flower_color");
+            int newPeelShape = chooseGene(peaPod, "b_peel_shape", "p_flower_color");
+            int newPeelColor = chooseGene(peaPod, "b_peel_color", "p_flower_color");
+            int newSeedShape = chooseGene(peaPod, "b_seed_shape", "p_flower_color");
+            int newSeedColor = chooseGene(peaPod, "b_seed_color", "p_flower_color");
             //绿色饱满
             if (newSeedShape != 3 && newSeedColor != 3){
                 ItemStack pea = new ItemStack(ModItems.PEA_GREEN_ROUND);
@@ -126,33 +143,48 @@ public class ModPeaPodItem extends Item {
 
     }
 
-    private static int chooseGene(ItemStack peaPod, String key){
-        int oldGene;
-        if (peaPod.getNbt() != null) {
-            oldGene = peaPod.getNbt().getInt(key);
-        }
-        else {
-            oldGene = 1;
-        }
-
-        if (oldGene == 1){
+    private static int chooseGene(ItemStack peaPod, String keyB, String keyP){
+        Random random = new Random();
+        assert peaPod.getNbt() != null;
+        int gene01 = peaPod.getNbt().getInt(keyB);
+        int gene02 = peaPod.getNbt().getInt(keyP);
+        int possibility = random.nextInt(1, 5);
+        if (gene01 == 1 && gene02 == 1){
             return 1;
         }
-        else if (oldGene == 2){
-            Random random = new Random();
-            float probability = random.nextFloat();
-            if (probability < 0.25){
+        else if ((gene01 == 1 && gene02 == 2) || (gene01 == 2 && gene02 == 1)){
+            if (possibility < 3){
                 return 1;
             }
-            else if (probability > 0.75){
+            else {
+                return 2;
+            }
+        }
+        else if ((gene01 == 3 && gene02 == 2) || (gene01 == 2 && gene02 == 3)){
+            if (possibility < 3){
                 return 3;
             }
             else {
                 return 2;
             }
         }
-        else if (oldGene == 3){
+        else if (gene01 == 3 && gene02 == 3){
             return 3;
+        }
+        else if (gene01 == 2 && gene02 == 2){
+            if (possibility == 1){
+                return 1;
+            }
+            else if (possibility == 4){
+                return 3;
+            }
+            else {
+                return 2;
+            }
+        }
+        else if ((gene01 == 1 && gene02 == 3) ||
+                (gene01 == 3 && gene02 == 1)){
+            return 2;
         }
         else {
             return 1;
