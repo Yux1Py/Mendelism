@@ -19,5 +19,21 @@
   "item.mendelism.tooltip.need_machine": "你需要一个XXX以查看基因型",
   "item.mendelism.tooltip.shift": "按下§eSHIFT§r查看基因型",
 
+  "item.mendelism.pea.tooltip.flower_color_dominant": "§d花色§r：§c红色§r（显性）",
+  "item.mendelism.pea.tooltip.flower_color_hybrid": "§d花色§r：§c红色§r（杂合）",
+  "item.mendelism.pea.tooltip.flower_color_recessive": "§d花色§r：白色（隐性）",
+  "item.mendelism.pea.tooltip.peel_shape_dominant": "§7果皮形状§r：§l饱满§r（显性）",
+  "item.mendelism.pea.tooltip.peel_shape_hybrid": "§7果皮形状§r：§l饱满§r（杂合）",
+  "item.mendelism.pea.tooltip.peel_shape_recessive": "§7果皮形状§r：§o皱缩§r（隐性）",
+  "item.mendelism.pea.tooltip.peel_color_dominant": "§2果皮颜色§r：§a绿色§r（显性）",
+  "item.mendelism.pea.tooltip.peel_color_hybrid": "§2果皮颜色§r：§a绿色§r（杂合）",
+  "item.mendelism.pea.tooltip.peel_color_recessive": "§2果皮颜色§r：§e黄色§r（隐性）",
+  "item.mendelism.pea.tooltip.seed_shape_dominant": "§7种皮形状§r：§l饱满§r（显性）",
+  "item.mendelism.pea.tooltip.seed_shape_hybrid": "§7种皮形状§r：§l饱满§r（杂合）",
+  "item.mendelism.pea.tooltip.seed_shape_recessive": "§7种皮形状§r：§o皱缩§r（隐性）",
+  "item.mendelism.pea.tooltip.seed_color_dominant": "§2种皮颜色§r：§a绿色§r（显性）",
+  "item.mendelism.pea.tooltip.seed_color_hybrid": "§2种皮颜色§r：§a绿色§r（杂合）",
+  "item.mendelism.pea.tooltip.seed_color_recessive": "§2种皮颜色§r：§e黄色§r（隐性）",
+
   "itemGroup.mendelism.mendelism": "孟德尔主义"
 }

@@ -19,5 +19,21 @@
   "item.mendelism.tooltip.need_machine": "You Need A XXX to Check out the Genotype",
   "item.mendelism.tooltip.shift": "Press §eSHIFT§r For Genotype",
 
+  "item.mendelism.pea.tooltip.flower_color_dominant": "§dFlower Color§r：§cRed§r（Dominant）",
+  "item.mendelism.pea.tooltip.flower_color_hybrid": "§dFlower Color§r：§cRed§r（Hybrid）",
+  "item.mendelism.pea.tooltip.flower_color_recessive": "§dFlower Color§r：White§r（Recessive）",
+  "item.mendelism.pea.tooltip.peel_shape_dominant": "§7Peel Shape§r：§lPlump§r（Dominant）",
+  "item.mendelism.pea.tooltip.peel_shape_hybrid": "§7Peel Shape§r：§lPlump§r（Hybrid）",
+  "item.mendelism.pea.tooltip.peel_shape_recessive": "§7Peel Shape§r：§oShrunken§r（Recessive）",
+  "item.mendelism.pea.tooltip.peel_color_dominant": "§2Peel Color§r：§aGreen§r（Dominant）",
+  "item.mendelism.pea.tooltip.peel_color_hybrid": "§2Peel Color§r：§aGreen§r（Hybrid）",
+  "item.mendelism.pea.tooltip.peel_color_recessive": "§2Peel Color§r：§eYellow§r（Recessive）",
+  "item.mendelism.pea.tooltip.seed_shape_dominant": "§7Seed Shape§r：§lRound§r（Dominant）",
+  "item.mendelism.pea.tooltip.seed_shape_hybrid": "§7Seed Shape§r：§lRound§r（Hybrid）",
+  "item.mendelism.pea.tooltip.seed_shape_recessive": "§7Seed Shape§r：§oWrinkled§r（Recessive）",
+  "item.mendelism.pea.tooltip.seed_color_dominant": "S§2eed Color§r：§aGreen§r（Dominant）",
+  "item.mendelism.pea.tooltip.seed_color_hybrid": "§2Seed Color§r：§aGreen§r（Hybrid）",
+  "item.mendelism.pea.tooltip.seed_color_recessive": "§2Seed Color§r：§eYellow§r（Recessive）",
+
   "itemGroup.mendelism.mendelism": "Mendelism"
 }

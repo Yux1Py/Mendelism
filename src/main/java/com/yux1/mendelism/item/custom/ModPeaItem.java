@@ -2,6 +2,8 @@ package com.yux1.mendelism.item.custom;
 
 import com.yux1.mendelism.block.ModBlocks;
 import com.yux1.mendelism.block.custom.ModPeaCropBlock;
+import com.yux1.mendelism.item.ModItems;
+import com.yux1.mendelism.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,6 +15,7 @@ import net.minecraft.item.AliasedBlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
@@ -67,11 +70,22 @@ public class ModPeaItem extends Item {
             else
             {
                 if (stack.getNbt() != null) {
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("flower_color"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_shape"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("peel_color"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_shape"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("seed_color"))));
+                    tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "flower_color"));
+                    tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "peel_shape"));
+                    tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "peel_color"));
+                    tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "seed_shape"));
+                    tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "seed_color"));
+                }
+                else {
+                    if (stack.getItem() == ModItems.PEA){
+                        NbtCompound nbt = new NbtCompound();
+                        nbt.putInt("flower_color", 1);
+                        nbt.putInt("peel_shape", 1);
+                        nbt.putInt("peel_color", 1);
+                        nbt.putInt("seed_shape", 1);
+                        nbt.putInt("seed_color", 1);
+                        stack.setNbt(nbt);
+                    }
                 }
             }
         }
