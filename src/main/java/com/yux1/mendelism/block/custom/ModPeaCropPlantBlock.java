@@ -51,66 +51,96 @@ public class ModPeaCropPlantBlock extends PlantBlock {
             if (genotype == Genotype.NONE){
                 peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
                 NbtCompound nbt = new NbtCompound();
-                nbt.putInt("flower_color", 1);
-                nbt.putInt("peel_shape", 1);
-                nbt.putInt("peel_color", 1);
-                nbt.putInt("seed_shape", 1);
-                nbt.putInt("seed_color", 1);
+                nbt.putInt("b_flower_color", 1);
+                nbt.putInt("b_peel_shape", 1);
+                nbt.putInt("b_peel_color", 1);
+                nbt.putInt("b_seed_shape", 1);
+                nbt.putInt("b_seed_color", 1);
+                nbt.putInt("p_flower_color", 1);
+                nbt.putInt("p_peel_shape", 1);
+                nbt.putInt("p_peel_color", 1);
+                nbt.putInt("p_seed_shape", 1);
+                nbt.putInt("p_seed_color", 1);
                 peaPod.setNbt(nbt);
                 dropStack(world, pos, peaPod);
             }
             else if (genotype == Genotype.FLOWER_COLOR){
                 peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
                 NbtCompound nbt = new NbtCompound();
-                nbt.putInt("flower_color", 3);
-                nbt.putInt("peel_shape", 1);
-                nbt.putInt("peel_color", 1);
-                nbt.putInt("seed_shape", 1);
-                nbt.putInt("seed_color", 1);
+                nbt.putInt("b_flower_color", 3);
+                nbt.putInt("b_peel_shape", 1);
+                nbt.putInt("b_peel_color", 1);
+                nbt.putInt("b_seed_shape", 1);
+                nbt.putInt("b_seed_color", 1);
+                nbt.putInt("p_flower_color", 3);
+                nbt.putInt("p_peel_shape", 1);
+                nbt.putInt("p_peel_color", 1);
+                nbt.putInt("p_seed_shape", 1);
+                nbt.putInt("p_seed_color", 1);
                 peaPod.setNbt(nbt);
                 dropStack(world, pos, peaPod);
             }
             else if (genotype == Genotype.PEEL_SHAPE){
                 peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
                 NbtCompound nbt = new NbtCompound();
-                nbt.putInt("flower_color", 1);
-                nbt.putInt("peel_shape", 3);
-                nbt.putInt("peel_color", 1);
-                nbt.putInt("seed_shape", 1);
-                nbt.putInt("seed_color", 1);
+                nbt.putInt("b_flower_color", 1);
+                nbt.putInt("b_peel_shape", 3);
+                nbt.putInt("b_peel_color", 1);
+                nbt.putInt("b_seed_shape", 1);
+                nbt.putInt("b_seed_color", 1);
+                nbt.putInt("p_flower_color", 1);
+                nbt.putInt("p_peel_shape", 3);
+                nbt.putInt("p_peel_color", 1);
+                nbt.putInt("p_seed_shape", 1);
+                nbt.putInt("p_seed_color", 1);
                 peaPod.setNbt(nbt);
                 dropStack(world, pos, peaPod);
             }
             else if (genotype == Genotype.PEEL_COLOR){
                 peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
                 NbtCompound nbt = new NbtCompound();
-                nbt.putInt("flower_color", 1);
-                nbt.putInt("peel_shape", 1);
-                nbt.putInt("peel_color", 3);
-                nbt.putInt("seed_shape", 1);
-                nbt.putInt("seed_color", 1);
+                nbt.putInt("b_flower_color", 1);
+                nbt.putInt("b_peel_shape", 1);
+                nbt.putInt("b_peel_color", 3);
+                nbt.putInt("b_seed_shape", 1);
+                nbt.putInt("b_seed_color", 1);
+                nbt.putInt("p_flower_color", 1);
+                nbt.putInt("p_peel_shape", 1);
+                nbt.putInt("p_peel_color", 3);
+                nbt.putInt("p_seed_shape", 1);
+                nbt.putInt("p_seed_color", 1);
                 peaPod.setNbt(nbt);
                 dropStack(world, pos, peaPod);
             }
             else if (genotype == Genotype.SEED_SHAPE){
                 peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
                 NbtCompound nbt = new NbtCompound();
-                nbt.putInt("flower_color", 1);
-                nbt.putInt("peel_shape", 1);
-                nbt.putInt("peel_color", 1);
-                nbt.putInt("seed_shape", 3);
-                nbt.putInt("seed_color", 1);
+                nbt.putInt("b_flower_color", 1);
+                nbt.putInt("b_peel_shape", 1);
+                nbt.putInt("b_peel_color", 1);
+                nbt.putInt("b_seed_shape", 3);
+                nbt.putInt("b_seed_color", 1);
+                nbt.putInt("p_flower_color", 1);
+                nbt.putInt("p_peel_shape", 1);
+                nbt.putInt("p_peel_color", 1);
+                nbt.putInt("p_seed_shape", 3);
+                nbt.putInt("p_seed_color", 1);
                 peaPod.setNbt(nbt);
                 dropStack(world, pos, peaPod);
             }
             else if (genotype == Genotype.SEED_COLOR){
                 peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
                 NbtCompound nbt = new NbtCompound();
-                nbt.putInt("flower_color", 1);
-                nbt.putInt("peel_shape", 1);
-                nbt.putInt("peel_color", 1);
-                nbt.putInt("seed_shape", 1);
-                nbt.putInt("seed_color", 3);
+                nbt.putInt("b_flower_color", 1);
+                nbt.putInt("b_peel_shape", 1);
+                nbt.putInt("b_peel_color", 1);
+                nbt.putInt("b_seed_shape", 1);
+                nbt.putInt("b_seed_color", 3);
+                nbt.putInt("p_flower_color", 1);
+                nbt.putInt("p_peel_shape", 1);
+                nbt.putInt("p_peel_color", 1);
+                nbt.putInt("p_seed_shape", 1);
+                nbt.putInt("p_seed_color", 3);
                 peaPod.setNbt(nbt);
                 dropStack(world, pos, peaPod);
             }

@@ -27,15 +27,6 @@ import java.util.Random;
 
 public class ModPeaCropBlock extends CropBlock {
 
-    //是否有雄蕊
-    public static final BooleanProperty HAS_STAMEN = BooleanProperty.of("has_stamen");
-
-    //是否有花粉输入
-    public static final BooleanProperty HAS_POLLEN = BooleanProperty.of("has_pollen");
-
-    //花粉的基因型
-    //public static final IntProperty
-
     //基因型，1代表显性纯合子， 2代表杂合子， 3代表隐性纯合子
     //
     //植株花色  红色·白色
@@ -43,13 +34,23 @@ public class ModPeaCropBlock extends CropBlock {
     //果皮颜色  绿色·黄色
     //种皮形状  饱满·皱缩
     //种皮颜色  绿色·黄色
-    private static final IntProperty FLOWER_COLOR = IntProperty.of("flower_color", 1, 3);
-    private static final IntProperty PEEL_SHAPE = IntProperty.of("peel_shape", 1, 3);
-    private static final IntProperty PEEL_COLOR = IntProperty.of("peel_color", 1, 3);
-    private static final IntProperty SEED_SHAPE = IntProperty.of("seed_shape", 1, 3);
-    private static final IntProperty SEED_COLOR = IntProperty.of("seed_color", 1, 3);
+    private static final IntProperty B_FLOWER_COLOR = IntProperty.of("flower_color", 1, 3);
+    private static final IntProperty B_PEEL_SHAPE = IntProperty.of("peel_shape", 1, 3);
+    private static final IntProperty B_PEEL_COLOR = IntProperty.of("peel_color", 1, 3);
+    private static final IntProperty B_SEED_SHAPE = IntProperty.of("seed_shape", 1, 3);
+    private static final IntProperty B_SEED_COLOR = IntProperty.of("seed_color", 1, 3);
 
-    private static ItemStack seed;
+    //是否有雄蕊
+    private static final BooleanProperty HAS_STAMEN = BooleanProperty.of("has_stamen");
+
+    //是否有花粉输入
+    private static final BooleanProperty HAS_POLLEN = BooleanProperty.of("has_pollen");
+
+    private int P_FLOWER_COLOR;
+    private int P_PEEL_SHAPE;
+    private int P_PEEL_COLOR;
+    private int P_SEED_SHAPE;
+    private int P_SEED_COLOR;
 
     public ModPeaCropBlock(Settings settings) {
         super(settings);
@@ -61,15 +62,21 @@ public class ModPeaCropBlock extends CropBlock {
         // 绿色果皮纯合子
         // 饱满种皮纯合子
         // 绿色种皮纯合子
-        setDefaultState(this.getStateManager().getDefaultState()
-                .with(HAS_STAMEN, true)
-                .with(HAS_POLLEN, false)
 
-                .with(FLOWER_COLOR, 1)
-                .with(PEEL_SHAPE, 1)
-                .with(PEEL_COLOR, 1)
-                .with(SEED_SHAPE, 1)
-                .with(SEED_COLOR, 1));
+        setDefaultState(this.getStateManager().getDefaultState()
+                .with(B_FLOWER_COLOR, 1)
+                .with(B_PEEL_SHAPE, 1)
+                .with(B_PEEL_COLOR, 1)
+                .with(B_SEED_SHAPE, 1)
+                .with(B_SEED_COLOR, 1)
+                .with(HAS_STAMEN, true)
+                .with(HAS_POLLEN, false));
+
+        P_FLOWER_COLOR = 1;
+        P_PEEL_SHAPE = 1;
+        P_PEEL_COLOR = 1;
+        P_SEED_SHAPE = 1;
+        P_SEED_COLOR = 1;
     }
 
     @Override
@@ -79,74 +86,18 @@ public class ModPeaCropBlock extends CropBlock {
         setDefaultState(this.getStateManager().getDefaultState()
                 .with(HAS_STAMEN, true)
                 .with(HAS_POLLEN, false)
-                .with(FLOWER_COLOR, itemStack.getNbt().getInt("flower_color"))
-                .with(PEEL_SHAPE, itemStack.getNbt().getInt("peel_shape"))
-                .with(PEEL_COLOR, itemStack.getNbt().getInt("peel_color"))
-                .with(SEED_SHAPE, itemStack.getNbt().getInt("seed_shape"))
-                .with(SEED_COLOR, itemStack.getNbt().getInt("seed_color")));
+                .with(B_FLOWER_COLOR, itemStack.getNbt().getInt("flower_color"))
+                .with(B_PEEL_SHAPE, itemStack.getNbt().getInt("peel_shape"))
+                .with(B_PEEL_COLOR, itemStack.getNbt().getInt("peel_color"))
+                .with(B_SEED_SHAPE, itemStack.getNbt().getInt("seed_shape"))
+                .with(B_SEED_COLOR, itemStack.getNbt().getInt("seed_color")));
 
-        //保存一下种子方便掉落
-        if (placer != null) {
-            //绿色饱满
-            if (state.get(SEED_SHAPE) != 3 && state.get(SEED_COLOR) != 3){
-                ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_ROUND);
-                NbtCompound nbt = new NbtCompound();
-                blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-                blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-                blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-                blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-                blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
-                newSeed.setNbt(nbt);
-                seed = newSeed;
-            }
-            //绿色皱缩
-            else if (state.get(SEED_SHAPE) == 3 && state.get(SEED_COLOR) != 3){
-                ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_WRINKLED);
-                NbtCompound nbt = new NbtCompound();
-                blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-                blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-                blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-                blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-                blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
-                newSeed.setNbt(nbt);
-                seed = newSeed;
-            }
-            //黄色饱满
-            else if (state.get(SEED_SHAPE) != 3 && state.get(SEED_COLOR) == 3){
-                ItemStack newSeed = new ItemStack(ModItems.PEA_YELLOW_ROUND);
-                NbtCompound nbt = new NbtCompound();
-                blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-                blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-                blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-                blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-                blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
-                newSeed.setNbt(nbt);
-                seed = newSeed;
-            }
-            //黄色皱缩
-            else if (state.get(SEED_SHAPE) == 3 && state.get(SEED_COLOR) == 3){
-                ItemStack newSeed = new ItemStack(ModItems.PEA_YELLOW_WRINKLED);
-                NbtCompound nbt = new NbtCompound();
-                blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-                blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-                blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-                blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-                blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
-                newSeed.setNbt(nbt);
-                seed = newSeed;
-            }
-            else {
-                ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_ROUND);
-                NbtCompound nbt = new NbtCompound();
-                blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-                blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-                blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-                blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-                blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
-                newSeed.setNbt(nbt);
-                seed = newSeed;
-            }
-        }
+        P_FLOWER_COLOR = state.get(B_FLOWER_COLOR);
+        P_PEEL_SHAPE = state.get(B_PEEL_SHAPE);
+        P_PEEL_COLOR = state.get(B_PEEL_COLOR);
+        P_SEED_SHAPE = state.get(B_SEED_SHAPE);
+        P_SEED_COLOR = state.get(B_SEED_COLOR);
+
 
         super.onPlaced(world, pos, state, placer, itemStack);
     }
@@ -155,7 +106,7 @@ public class ModPeaCropBlock extends CropBlock {
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(HAS_STAMEN, HAS_POLLEN);
-        builder.add(FLOWER_COLOR, PEEL_SHAPE, PEEL_COLOR, SEED_SHAPE, SEED_COLOR);
+        builder.add(B_FLOWER_COLOR, B_PEEL_SHAPE, B_PEEL_COLOR, B_SEED_SHAPE, B_SEED_COLOR);
         super.appendProperties(builder);
     }
 
@@ -170,11 +121,11 @@ public class ModPeaCropBlock extends CropBlock {
             //如果到达花期
             else if (i >= 5 && i < this.getMaxAge()){
                 //如果有雄蕊（未做去雄处理），继续正常生长
-                if (state.get(HAS_STAMEN)){
+                if (getHasStamen(state)){
                     cropGrow(this, i, state, world, pos, random);
                 }
                 //如果有花粉输入（去雄后），继续生长并输入花粉基因
-                else if (!state.get(HAS_STAMEN) && state.get(HAS_POLLEN)){
+                else if (!getHasStamen(state) && getHasPollen(state)){
                     cropGrow(this, i, state, world, pos, random);
                 }
             }
@@ -193,53 +144,54 @@ public class ModPeaCropBlock extends CropBlock {
     //             ，若不是剪刀且已成熟则掉落豆荚
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+
         //若未去雄，顺利执行其他操作
         //去雄
         if (Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.EMASCULATION)){
-            if (state.get(HAS_STAMEN)){
+            if (getHasStamen(state)){
                 //减少耐久
-                if (!player.isCreative()){
-                    player.getMainHandStack().setDamage(player.getMainHandStack().getMaxDamage() - 1);
-                }
+                //if (!player.isCreative()){
+                //    player.getMainHandStack().setDamage(player.getMainHandStack().getDamage() - 1);
+                //}
                 ModUtils.print(world, player, "去雄", false);
                 player.swingHand(Hand.MAIN_HAND);
-                world.setBlockState(pos, state.with(HAS_STAMEN, false));
+                world.setBlockState(pos, this.withHasStamen(false));
             }
         }
         //若已去雄，则阻止玩家催熟
-        else if (!state.get(HAS_STAMEN) && !state.get(HAS_POLLEN) && !(Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.BRUSH))){
+        else if (!getHasStamen(state) && !getHasPollen(state) && !(Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.BRUSH))){
             return ActionResult.SUCCESS;
         }
         //取花粉 或 授粉
         else if (Registry.ITEM.getOrCreateEntry(Registry.ITEM.getKey(player.getMainHandStack().getItem()).get()).isIn(ModTags.Items.BRUSH)){
             ItemStack brush = player.getMainHandStack();
             if (brush.hasNbt()){
+                assert brush.getNbt() != null;
                 boolean bHasPollen = brush.getNbt().getBoolean("has_pollen");
                 //若刷子中未存储花粉 并且 植株未进行授粉或去雄
-                if (!world.isClient()){
-                    player.sendMessage(new LiteralText(String.valueOf(state.get(HAS_STAMEN))), false);
-                    player.sendMessage(new LiteralText(String.valueOf(state.get(HAS_POLLEN))), false);
-                }
-                if (!bHasPollen && !state.get(HAS_POLLEN) && state.get(HAS_STAMEN)){
+                if (!bHasPollen && !getHasPollen(state) && getHasStamen(state)){
                     ModUtils.print(world, player, "取花粉", false);
                     player.swingHand(Hand.MAIN_HAND);
                     NbtCompound nbt = new NbtCompound();
-                    blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-                    blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-                    blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-                    blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-                    blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
+                    blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "flower_color");
+                    blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "peel_shape");
+                    blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "peel_color");
+                    blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "seed_shape");
+                    blockPropertyToNbt(state, B_SEED_COLOR, nbt, "seed_color");
                     nbt.putBoolean("has_pollen", true);
                     brush.setNbt(nbt);
                 }
                 //若刷子中存储了花粉 并且 植株未进行授粉且已去雄
-                else if (bHasPollen && !state.get(HAS_POLLEN) && !state.get(HAS_STAMEN) && this.getAge(state) > 4){
+                else if (bHasPollen && !getHasPollen(state) && !getHasStamen(state)){
                     ModUtils.print(world, player, "授粉", false);
                     player.swingHand(Hand.MAIN_HAND);
-                    changeGenotype(state, world, pos, player, hand, hit, brush);
+                    saveGenotype(state, world, pos, player, hand, hit, brush);
                     NbtCompound nbt = new NbtCompound();
                     nbt.putBoolean("has_pollen", false);
                     brush.setNbt(nbt);
+                    world.setBlockState(pos, this.getStateManager().getDefaultState()
+                            .with(HAS_STAMEN, false).with(HAS_POLLEN, true));
+                    //world.setBlockState(pos, this.withHasPollen(true));
                 }
             }
         }
@@ -251,13 +203,27 @@ public class ModPeaCropBlock extends CropBlock {
                 dropPeaPod(world, pos, state, player);
             }
         }
+        ModUtils.print(world, player, "-----", false);
+        ModUtils.print(world, player, String.valueOf(getHasPollen(state)), false);
+        ModUtils.print(world, player, "-----", false);
+
+
         return ActionResult.PASS;
     }
 
     //掉落豆荚的方法
     private void dropPeaPod(World world, BlockPos pos, BlockState state, PlayerEntity player){
         if (this.getAge(state) == this.getMaxAge()){
-            ItemStack peaPod = choosePeaPodItem(world, pos, state, player);
+
+            ModUtils.print(world, player, "-----", false);
+            ModUtils.print(world, player, String.valueOf(getHasPollen(state)), false);
+            ModUtils.print(world, player, "-----", false);
+
+            ModUtils.print(world, player, "-----", false);
+            ModUtils.print(world, player, String.valueOf(this.getDefaultState().get(HAS_POLLEN)), false);
+            ModUtils.print(world, player, "-----", false);
+
+            ItemStack peaPod = choosePeaPodItem(world, pos, state, player, this.getDefaultState().get(HAS_POLLEN));
             Random random = new Random();
             int count = random.nextInt(1, 6);
             dropStack(world, pos, peaPod);
@@ -271,15 +237,93 @@ public class ModPeaCropBlock extends CropBlock {
             }
         }
         else {
+            ItemStack seed = null;
+            //保存一下种子方便掉落
+            if (player != null) {
+                //绿色饱满
+                if (state.get(B_SEED_SHAPE) != 3 && state.get(B_SEED_COLOR) != 3){
+                    ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_ROUND);
+                    NbtCompound nbt = new NbtCompound();
+                    blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "flower_color");
+                    blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "peel_shape");
+                    blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "peel_color");
+                    blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "seed_shape");
+                    blockPropertyToNbt(state, B_SEED_COLOR, nbt, "seed_color");
+                    newSeed.setNbt(nbt);
+                    seed = newSeed;
+                }
+                //绿色皱缩
+                else if (state.get(B_SEED_SHAPE) == 3 && state.get(B_SEED_COLOR) != 3){
+                    ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_WRINKLED);
+                    NbtCompound nbt = new NbtCompound();
+                    blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "flower_color");
+                    blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "peel_shape");
+                    blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "peel_color");
+                    blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "seed_shape");
+                    blockPropertyToNbt(state, B_SEED_COLOR, nbt, "seed_color");
+                    newSeed.setNbt(nbt);
+                    seed = newSeed;
+                }
+                //黄色饱满
+                else if (state.get(B_SEED_SHAPE) != 3 && state.get(B_SEED_COLOR) == 3){
+                    ItemStack newSeed = new ItemStack(ModItems.PEA_YELLOW_ROUND);
+                    NbtCompound nbt = new NbtCompound();
+                    blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "flower_color");
+                    blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "peel_shape");
+                    blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "peel_color");
+                    blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "seed_shape");
+                    blockPropertyToNbt(state, B_SEED_COLOR, nbt, "seed_color");
+                    newSeed.setNbt(nbt);
+                    seed = newSeed;
+                }
+                //黄色皱缩
+                else if (state.get(B_SEED_SHAPE) == 3 && state.get(B_SEED_COLOR) == 3){
+                    ItemStack newSeed = new ItemStack(ModItems.PEA_YELLOW_WRINKLED);
+                    NbtCompound nbt = new NbtCompound();
+                    blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "flower_color");
+                    blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "peel_shape");
+                    blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "peel_color");
+                    blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "seed_shape");
+                    blockPropertyToNbt(state, B_SEED_COLOR, nbt, "seed_color");
+                    newSeed.setNbt(nbt);
+                    seed = newSeed;
+                }
+                else {
+                    ItemStack newSeed = new ItemStack(ModItems.PEA_GREEN_ROUND);
+                    NbtCompound nbt = new NbtCompound();
+                    blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "flower_color");
+                    blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "peel_shape");
+                    blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "peel_color");
+                    blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "seed_shape");
+                    blockPropertyToNbt(state, B_SEED_COLOR, nbt, "seed_color");
+                    newSeed.setNbt(nbt);
+                    seed = newSeed;
+                }
+            }
             dropStack(world, pos, seed);
         }
     }
 
-    private static void cropGrow(ModPeaCropBlock block, int thisAge, BlockState state, ServerWorld world, BlockPos pos, Random random){
+    private void cropGrow(ModPeaCropBlock block, int thisAge, BlockState state, ServerWorld world, BlockPos pos, Random random){
         float f = getAvailableMoisture(block, world, pos);
         if (random.nextInt((int)(25.0F / f) + 1) == 0) {
-            world.setBlockState(pos, block.withAge(thisAge + 1), 2);
+            this.getStateManager().getDefaultState().with(AGE, this.getAge(state) + 1)
+                    .with(HAS_STAMEN, this.getHasStamen(state))
+                    .with(HAS_POLLEN, this.getHasPollen(state));
         }
+    }
+
+    private void generalBlockPropertyToNbt(BlockState state, NbtCompound nbt){
+        blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "b_flower_color");
+        blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "b_peel_shape");
+        blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "b_peel_color");
+        blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "b_seed_shape");
+        blockPropertyToNbt(state, B_SEED_COLOR, nbt, "b_seed_color");
+        nbt.putInt("p_flower_color", P_FLOWER_COLOR);
+        nbt.putInt("p_peel_shape", P_PEEL_SHAPE);
+        nbt.putInt("p_peel_color", P_PEEL_COLOR);
+        nbt.putInt("p_seed_shape", P_SEED_SHAPE);
+        nbt.putInt("p_seed_color", P_SEED_COLOR);
     }
 
     private static void blockPropertyToNbt(BlockState state, IntProperty intProperty, NbtCompound nbt, String nbtKey){
@@ -298,19 +342,18 @@ public class ModPeaCropBlock extends CropBlock {
     }
 
     //将Crop的基因型继承至PeaPod，并选择豆荚材质
-    private static ItemStack choosePeaPodItem(World world, BlockPos pos, BlockState state, PlayerEntity player){
-        int peelShape = state.get(PEEL_SHAPE);
-        int peelColor = state.get(PEEL_COLOR);
+    private ItemStack choosePeaPodItem(World world, BlockPos pos, BlockState state, PlayerEntity player, boolean hasPollen){
+        int peelShape = state.get(B_PEEL_SHAPE);
+        int peelColor = state.get(B_PEEL_COLOR);
+
+        ModUtils.print(world, player, String.valueOf(hasPollen), false);
 
         //绿色饱满
         if (peelShape != 3 && peelColor != 3){
             ItemStack peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
             NbtCompound nbt = new NbtCompound();
-            blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-            blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-            blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-            blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-            blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
+            generalBlockPropertyToNbt(state, nbt);
+            nbt.putBoolean("has_pollen", hasPollen);
             peaPod.setNbt(nbt);
             return peaPod;
         }
@@ -318,11 +361,8 @@ public class ModPeaCropBlock extends CropBlock {
         else if (peelShape == 3 && peelColor != 3){
             ItemStack peaPod = new ItemStack(ModItems.PEA_POD_GREEN_SHRUNKEN);
             NbtCompound nbt = new NbtCompound();
-            blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-            blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-            blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-            blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-            blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
+            generalBlockPropertyToNbt(state, nbt);
+            nbt.putBoolean("has_pollen", hasPollen);
             peaPod.setNbt(nbt);
             return peaPod;
         }
@@ -330,11 +370,8 @@ public class ModPeaCropBlock extends CropBlock {
         else if (peelShape != 3 && peelColor == 3){
             ItemStack peaPod = new ItemStack(ModItems.PEA_POD_YELLOW_PLUMP);
             NbtCompound nbt = new NbtCompound();
-            blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-            blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-            blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-            blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-            blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
+            generalBlockPropertyToNbt(state, nbt);
+            nbt.putBoolean("has_pollen", hasPollen);
             peaPod.setNbt(nbt);
             return peaPod;
         }
@@ -342,61 +379,33 @@ public class ModPeaCropBlock extends CropBlock {
         else if (peelShape == 3 && peelColor == 3){
             ItemStack peaPod = new ItemStack(ModItems.PEA_POD_YELLOW_SHRUNKEN);
             NbtCompound nbt = new NbtCompound();
-            blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-            blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-            blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-            blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-            blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
+            generalBlockPropertyToNbt(state, nbt);
+            nbt.putBoolean("has_pollen", hasPollen);
             peaPod.setNbt(nbt);
             return peaPod;
         }
         else {
             ItemStack peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
             NbtCompound nbt = new NbtCompound();
-            blockPropertyToNbt(state, FLOWER_COLOR, nbt, "flower_color");
-            blockPropertyToNbt(state, PEEL_SHAPE, nbt, "peel_shape");
-            blockPropertyToNbt(state, PEEL_COLOR, nbt, "peel_color");
-            blockPropertyToNbt(state, SEED_SHAPE, nbt, "seed_shape");
-            blockPropertyToNbt(state, SEED_COLOR, nbt, "seed_color");
+            generalBlockPropertyToNbt(state, nbt);
+            nbt.putBoolean("has_pollen", hasPollen);
             peaPod.setNbt(nbt);
             return peaPod;
         }
     }
 
     //在授粉之后进行BlockState内基因型的更新
-    private void changeGenotype(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, ItemStack brush){
+    private void saveGenotype(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, ItemStack brush){
         assert brush.getNbt() != null;
 
-        int bFlowerColor = state.get(FLOWER_COLOR);
-        int pFlowerColor = brush.getNbt().getInt("flower_color");
-        int newFlowerColor = calculateGene(bFlowerColor, pFlowerColor);
+        world.setBlockState(pos, withHasStamen(false));
+        world.setBlockState(pos, withHasPollen(true));
 
-        int bPeelShape = state.get(PEEL_SHAPE);
-        int pPeelShape = brush.getNbt().getInt("peel_shape");
-        int newPeelShape = calculateGene(bPeelShape, pPeelShape);
-
-        int bPeelColor = state.get(PEEL_COLOR);
-        int pPeelColor = brush.getNbt().getInt("peel_color");
-        int newPeelColor = calculateGene(bPeelColor, pPeelColor);
-
-        int bSeedShape = state.get(SEED_SHAPE);
-        int pSeedShape = brush.getNbt().getInt("seed_shape");
-        int newSeedShape = calculateGene(bSeedShape, pSeedShape);
-
-        int bSeedColor = state.get(SEED_COLOR);
-        int pSeedColor = brush.getNbt().getInt("seed_color");
-        int newSeedColor = calculateGene(bSeedColor, pSeedColor);
-
-
-        setDefaultState(this.getStateManager().getDefaultState()
-                .with(HAS_STAMEN, false)
-                .with(HAS_POLLEN, true)
-                .with(FLOWER_COLOR, newFlowerColor)
-                .with(PEEL_SHAPE, newPeelShape)
-                .with(PEEL_COLOR, newPeelColor)
-                .with(SEED_SHAPE, newSeedShape)
-                .with(SEED_COLOR, newSeedColor));
-        world.setBlockState(pos, state.with(HAS_POLLEN, true));
+        P_FLOWER_COLOR = brush.getNbt().getInt("flower_color");
+        P_PEEL_SHAPE = brush.getNbt().getInt("peel_shape");
+        P_PEEL_COLOR = brush.getNbt().getInt("peel_color");
+        P_SEED_SHAPE = brush.getNbt().getInt("seed_shape");
+        P_SEED_COLOR = brush.getNbt().getInt("seed_color");
     }
 
     private int calculateGene(int gene01, int gene02){
@@ -443,5 +452,31 @@ public class ModPeaCropBlock extends CropBlock {
         else {
             return 1;
         }
+    }
+
+    //SETTER and GETTER
+    public BooleanProperty getStamenProperty() {
+        return HAS_STAMEN;
+    }
+
+    protected boolean getHasStamen(BlockState state) {
+        return state.get(this.getStamenProperty());
+    }
+
+    public BlockState withHasStamen(boolean hasStamen) {
+        return (BlockState)this.getDefaultState().with(this.getStamenProperty(), hasStamen);
+    }
+
+
+    public BooleanProperty getPollenProperty() {
+        return HAS_POLLEN;
+    }
+
+    protected boolean getHasPollen(BlockState state) {
+        return state.get(this.getPollenProperty());
+    }
+
+    public BlockState withHasPollen(boolean hasPollen) {
+        return (BlockState)this.getDefaultState().with(this.getPollenProperty(), hasPollen);
     }
 }
