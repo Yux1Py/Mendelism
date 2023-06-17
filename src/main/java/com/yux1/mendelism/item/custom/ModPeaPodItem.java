@@ -34,15 +34,7 @@ public class ModPeaPodItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 
-        if (true){
-            if(!Screen.hasShiftDown())
-            {
-                tooltip.add(new TranslatableText("item.mendelism.tooltip.shift"));
-            }
-            else
-            {
-                if (stack.getNbt() != null) {
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getBoolean("has_pollen"))));
+        if (stack.getNbt() != null) {
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_flower_color"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_peel_shape"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_peel_color"))));
@@ -53,30 +45,24 @@ public class ModPeaPodItem extends Item {
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_peel_color"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_seed_shape"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_seed_color"))));
-                }
-                else {
-                    if (stack.getItem() == ModItems.PEA_POD){
-                        NbtCompound nbt = new NbtCompound();
-                        nbt.putBoolean("has_pollen", false);
-                        nbt.putInt("b_flower_color", 1);
-                        nbt.putInt("b_peel_shape", 1);
-                        nbt.putInt("b_peel_color", 1);
-                        nbt.putInt("b_seed_shape", 1);
-                        nbt.putInt("b_seed_color", 1);
-                        nbt.putInt("p_flower_color", 1);
-                        nbt.putInt("p_peel_shape", 1);
-                        nbt.putInt("p_peel_color", 1);
-                        nbt.putInt("p_seed_shape", 1);
-                        nbt.putInt("p_seed_color", 1);
-                        stack.setNbt(nbt);
-                    }
-                }
-            }
         }
         else {
-            tooltip.add(new TranslatableText("item.mendelism.tooltip.need_machine"));
+            if (stack.getItem() == ModItems.PEA_POD){
+                NbtCompound nbt = new NbtCompound();
+                nbt.putBoolean("has_pollen", false);
+                nbt.putInt("b_flower_color", 1);
+                nbt.putInt("b_peel_shape", 1);
+                nbt.putInt("b_peel_color", 1);
+                nbt.putInt("b_seed_shape", 1);
+                nbt.putInt("b_seed_color", 1);
+                nbt.putInt("p_flower_color", 1);
+                nbt.putInt("p_peel_shape", 1);
+                nbt.putInt("p_peel_color", 1);
+                nbt.putInt("p_seed_shape", 1);
+                nbt.putInt("p_seed_color", 1);
+                stack.setNbt(nbt);
+            }
         }
-
         super.appendTooltip(stack, world, tooltip, context);
     }
 
@@ -92,10 +78,10 @@ public class ModPeaPodItem extends Item {
         assert peaPod.getNbt() != null;
         for (int i = 0; i < count; i++){
             int newFlowerColor = chooseGene(peaPod, "b_flower_color", "p_flower_color");
-            int newPeelShape = chooseGene(peaPod, "b_peel_shape", "p_flower_color");
-            int newPeelColor = chooseGene(peaPod, "b_peel_color", "p_flower_color");
-            int newSeedShape = chooseGene(peaPod, "b_seed_shape", "p_flower_color");
-            int newSeedColor = chooseGene(peaPod, "b_seed_color", "p_flower_color");
+            int newPeelShape = chooseGene(peaPod, "b_peel_shape", "p_peel_shape");
+            int newPeelColor = chooseGene(peaPod, "b_peel_color", "p_peel_color");
+            int newSeedShape = chooseGene(peaPod, "b_seed_shape", "p_seed_shape");
+            int newSeedColor = chooseGene(peaPod, "b_seed_color", "p_seed_color");
             //绿色饱满
             if (newSeedShape != 3 && newSeedColor != 3){
                 ItemStack pea = new ItemStack(ModItems.PEA_GREEN_ROUND);

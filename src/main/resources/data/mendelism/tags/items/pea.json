@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
+    "mendelism:pea",
+    "mendelism:pea_green_round",
+    "mendelism:pea_green_wrinkled",
     "mendelism:pea_yellow_round",
     "mendelism:pea_yellow_wrinkled"
   ]

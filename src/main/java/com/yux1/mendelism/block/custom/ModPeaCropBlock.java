@@ -1,6 +1,7 @@
 package com.yux1.mendelism.block.custom;
 
 import com.yux1.mendelism.item.ModItems;
+import com.yux1.mendelism.partical.ModParticles;
 import com.yux1.mendelism.util.ModTags;
 import com.yux1.mendelism.util.ModUtils;
 import net.minecraft.block.Block;
@@ -14,7 +15,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -153,8 +153,8 @@ public class ModPeaCropBlock extends CropBlock {
                 //if (!player.isCreative()){
                 //    player.getMainHandStack().setDamage(player.getMainHandStack().getDamage() - 1);
                 //}
-                ModUtils.print(world, player, "去雄", false);
                 player.swingHand(Hand.MAIN_HAND);
+                spawnPollenParticles(world, pos, state, -0.1d);
                 world.setBlockState(pos, this.withHasStamen(false));
             }
         }
@@ -170,8 +170,8 @@ public class ModPeaCropBlock extends CropBlock {
                 boolean bHasPollen = brush.getNbt().getBoolean("has_pollen");
                 //若刷子中未存储花粉 并且 植株未进行授粉或去雄
                 if (!bHasPollen && !getHasPollen(state) && getHasStamen(state)){
-                    ModUtils.print(world, player, "取花粉", false);
                     player.swingHand(Hand.MAIN_HAND);
+                    spawnPollenParticles(world, pos, state, 0.01d);
                     NbtCompound nbt = new NbtCompound();
                     blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "flower_color");
                     blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "peel_shape");
@@ -183,8 +183,8 @@ public class ModPeaCropBlock extends CropBlock {
                 }
                 //若刷子中存储了花粉 并且 植株未进行授粉且已去雄
                 else if (bHasPollen && !getHasPollen(state) && !getHasStamen(state)){
-                    ModUtils.print(world, player, "授粉", false);
                     player.swingHand(Hand.MAIN_HAND);
+                    spawnPollenParticles(world, pos, state, -0.01d);
                     saveGenotype(state, world, pos, player, hand, hit, brush);
                     NbtCompound nbt = new NbtCompound();
                     nbt.putBoolean("has_pollen", false);
@@ -203,25 +203,12 @@ public class ModPeaCropBlock extends CropBlock {
                 dropPeaPod(world, pos, state, player);
             }
         }
-        ModUtils.print(world, player, "-----", false);
-        ModUtils.print(world, player, String.valueOf(getHasPollen(state)), false);
-        ModUtils.print(world, player, "-----", false);
-
-
         return ActionResult.PASS;
     }
 
     //掉落豆荚的方法
     private void dropPeaPod(World world, BlockPos pos, BlockState state, PlayerEntity player){
         if (this.getAge(state) == this.getMaxAge()){
-
-            ModUtils.print(world, player, "-----", false);
-            ModUtils.print(world, player, String.valueOf(getHasPollen(state)), false);
-            ModUtils.print(world, player, "-----", false);
-
-            ModUtils.print(world, player, "-----", false);
-            ModUtils.print(world, player, String.valueOf(this.getDefaultState().get(HAS_POLLEN)), false);
-            ModUtils.print(world, player, "-----", false);
 
             ItemStack peaPod = choosePeaPodItem(world, pos, state, player, this.getDefaultState().get(HAS_POLLEN));
             Random random = new Random();
@@ -346,8 +333,6 @@ public class ModPeaCropBlock extends CropBlock {
         int peelShape = state.get(B_PEEL_SHAPE);
         int peelColor = state.get(B_PEEL_COLOR);
 
-        ModUtils.print(world, player, String.valueOf(hasPollen), false);
-
         //绿色饱满
         if (peelShape != 3 && peelColor != 3){
             ItemStack peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
@@ -451,6 +436,39 @@ public class ModPeaCropBlock extends CropBlock {
         }
         else {
             return 1;
+        }
+    }
+
+    private void spawnPollenParticles(World world, BlockPos positionClicked, BlockState state, double velocityY) {
+        for(int i = 0; i < 360; i++) {
+            if(i % 20 == 0) {
+                world.addParticle(ModParticles.RED_POLLEN_PARTICLE,
+                        positionClicked.getX() + 0.5d,
+                        positionClicked.getY() + (((double) (getAge(state) / getMaxAge()) != 1) ? (double) (getAge(state) / getMaxAge()) : 0.6d),
+                        positionClicked.getZ() + 0.5d,
+                        Math.cos(i) * 0.02d, velocityY, Math.sin(i) * 0.02d);
+            }
+            else if(i % 20 == 1) {
+                world.addParticle(ModParticles.YELLOW_POLLEN_PARTICLE,
+                        positionClicked.getX() + 0.5d,
+                        positionClicked.getY() + (((double) (getAge(state) / getMaxAge()) != 1) ? (double) (getAge(state) / getMaxAge()) : 0.6d),
+                        positionClicked.getZ() + 0.5d,
+                        Math.cos(i) * 0.02d, velocityY, Math.sin(i) * 0.02d);
+            }
+            else if(i % 20 == 2) {
+                world.addParticle(ModParticles.PINK_POLLEN_PARTICLE,
+                        positionClicked.getX() + 0.5d,
+                        positionClicked.getY() + (((double) (getAge(state) / getMaxAge()) != 1) ? (double) (getAge(state) / getMaxAge()) : 0.6d),
+                        positionClicked.getZ() + 0.5d,
+                        Math.cos(i) * 0.02d, velocityY, Math.sin(i) * 0.02d);
+            }
+            else if(i % 20 == 3) {
+                world.addParticle(ModParticles.WHITE_POLLEN_PARTICLE,
+                        positionClicked.getX() + 0.5d,
+                        positionClicked.getY() + (((double) (getAge(state) / getMaxAge()) != 1) ? (double) (getAge(state) / getMaxAge()) : 0.6d),
+                        positionClicked.getZ() + 0.5d,
+                        Math.cos(i) * 0.02d, velocityY, Math.sin(i) * 0.02d);
+            }
         }
     }
 

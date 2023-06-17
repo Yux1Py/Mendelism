@@ -81,7 +81,7 @@ public class ModPeaCropPlantBlock extends PlantBlock {
                 dropStack(world, pos, peaPod);
             }
             else if (genotype == Genotype.PEEL_SHAPE){
-                peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
+                peaPod = new ItemStack(ModItems.PEA_POD_GREEN_SHRUNKEN);
                 NbtCompound nbt = new NbtCompound();
                 nbt.putInt("b_flower_color", 1);
                 nbt.putInt("b_peel_shape", 3);
@@ -97,7 +97,7 @@ public class ModPeaCropPlantBlock extends PlantBlock {
                 dropStack(world, pos, peaPod);
             }
             else if (genotype == Genotype.PEEL_COLOR){
-                peaPod = new ItemStack(ModItems.PEA_POD_GREEN_PLUMP);
+                peaPod = new ItemStack(ModItems.PEA_POD_YELLOW_PLUMP);
                 NbtCompound nbt = new NbtCompound();
                 nbt.putInt("b_flower_color", 1);
                 nbt.putInt("b_peel_shape", 1);

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "mendelism:block/pea_crop_4_red"
+    "layer0": "mendelism:item/pea_thick_soup_green"
   }
 }

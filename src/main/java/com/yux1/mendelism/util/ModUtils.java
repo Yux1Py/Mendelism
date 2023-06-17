@@ -1,6 +1,7 @@
 package com.yux1.mendelism.util;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
@@ -73,5 +74,18 @@ public class ModUtils {
             }
         }
         return null;
+    }
+
+    public static boolean hasPlayerStackInInventory(PlayerEntity player, Item item){
+        for (int i = 0; i < player.getInventory().size(); i ++){
+
+            ItemStack currentStack = player.getInventory().getStack(i);
+
+            if (!currentStack.isEmpty() && currentStack.isItemEqual(new ItemStack(item))){
+                return true;
+            }
+        }
+
+        return false;
     }
 }

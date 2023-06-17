@@ -23,6 +23,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -30,12 +31,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ModPeaItem extends Item {
+    public static boolean hasGenotypeViewingMachine;
 
     private static Block cropBlock = null;
 
     public ModPeaItem(Block block, Settings settings) {
         super(settings);
         cropBlock = block;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        hasGenotypeViewingMachine = ModUtils.hasPlayerStackInInventory(user, ModItems.GENOTYPE_VIEWING_MACHINE);
+        return super.use(world, user, hand);
     }
 
     @Override
@@ -62,35 +70,32 @@ public class ModPeaItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (true){
-            if(!Screen.hasShiftDown())
-            {
-                tooltip.add(new TranslatableText("item.mendelism.tooltip.shift"));
-            }
-            else
-            {
-                if (stack.getNbt() != null) {
+
+        if (stack.getNbt() != null) {
+            if (hasGenotypeViewingMachine) {
+                if (!Screen.hasShiftDown()) {
+                    tooltip.add(new TranslatableText("item.mendelism.tooltip.shift"));
+                } else {
                     tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "flower_color"));
                     tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "peel_shape"));
                     tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "peel_color"));
                     tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "seed_shape"));
                     tooltip.add(ModUtils.turnPeaNbtToTranslatableText(stack, "seed_color"));
                 }
-                else {
-                    if (stack.getItem() == ModItems.PEA){
-                        NbtCompound nbt = new NbtCompound();
-                        nbt.putInt("flower_color", 1);
-                        nbt.putInt("peel_shape", 1);
-                        nbt.putInt("peel_color", 1);
-                        nbt.putInt("seed_shape", 1);
-                        nbt.putInt("seed_color", 1);
-                        stack.setNbt(nbt);
-                    }
-                }
             }
-        }
-        else {
-            tooltip.add(new TranslatableText("item.mendelism.tooltip.need_machine"));
+            else {
+                tooltip.add(new TranslatableText("item.mendelism.tooltip.need_machine"));
+            }
+        } else {
+            if (stack.getItem() == ModItems.PEA) {
+                NbtCompound nbt = new NbtCompound();
+                nbt.putInt("flower_color", 1);
+                nbt.putInt("peel_shape", 1);
+                nbt.putInt("peel_color", 1);
+                nbt.putInt("seed_shape", 1);
+                nbt.putInt("seed_color", 1);
+                stack.setNbt(nbt);
+            }
         }
         super.appendTooltip(stack, world, tooltip, context);
     }

@@ -32,6 +32,31 @@ public class ModBlocks {
             new ModPeaCropPlantBlock(FabricBlockSettings.copy(Blocks.DANDELION), ModPeaCropPlantBlock.Genotype.NONE),
             ModItemGroup.MENDELISM);
 
+    //野生型豌豆植株·白花
+    public static final Block PEA_CROP_PLANT_WHITE_FLOWER = registerBlock("pea_crop_plant_white_flower",
+            new ModPeaCropPlantBlock(FabricBlockSettings.copy(Blocks.DANDELION), ModPeaCropPlantBlock.Genotype.FLOWER_COLOR),
+            ModItemGroup.MENDELISM);
+
+    //野生型豌豆植株·皱缩果皮
+    public static final Block PEA_CROP_PLANT_SHRUNKEN_PEEL = registerBlock("pea_crop_plant_shrunken_peel",
+            new ModPeaCropPlantBlock(FabricBlockSettings.copy(Blocks.DANDELION), ModPeaCropPlantBlock.Genotype.PEEL_SHAPE),
+            ModItemGroup.MENDELISM);
+
+    //野生型豌豆植株·黄色果皮
+    public static final Block PEA_CROP_PLANT_YELLOW_PEEL = registerBlock("pea_crop_plant_yellow_peel",
+            new ModPeaCropPlantBlock(FabricBlockSettings.copy(Blocks.DANDELION), ModPeaCropPlantBlock.Genotype.PEEL_COLOR),
+            ModItemGroup.MENDELISM);
+
+    //野生型豌豆植株·皱缩果皮
+    public static final Block PEA_CROP_PLANT_WRINKLED_SEED = registerBlock("pea_crop_plant_wrinkled_seed",
+            new ModPeaCropPlantBlock(FabricBlockSettings.copy(Blocks.DANDELION), ModPeaCropPlantBlock.Genotype.SEED_SHAPE),
+            ModItemGroup.MENDELISM);
+
+    //野生型豌豆植株·黄色果皮
+    public static final Block PEA_CROP_PLANT_YELLOW_SEED = registerBlock("pea_crop_plant_yellow_seed",
+            new ModPeaCropPlantBlock(FabricBlockSettings.copy(Blocks.DANDELION), ModPeaCropPlantBlock.Genotype.SEED_COLOR),
+            ModItemGroup.MENDELISM);
+
     private static Block registerBlock(String name, Block block, ItemGroup itemGroup) {
         registerBlockItem(name, block, itemGroup);
         return Registry.register(Registry.BLOCK, new Identifier(Mendelism.MOD_ID, name), block);
