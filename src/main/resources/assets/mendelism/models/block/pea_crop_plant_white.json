@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cross",
+  "parent": "minecraft:block/crop",
   "textures": {
-    "cross": "mendelism:block/pea_crop_4_white"
+    "crop": "mendelism:block/pea_crop_plant_white"
   }
 }

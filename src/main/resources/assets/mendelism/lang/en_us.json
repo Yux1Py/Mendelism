@@ -17,16 +17,15 @@
   "item.mendelism.genotype_viewing_machine": "Genotype Viewing Machine",
 
   "block.mendelism.pea_crop": "Pea Crop",
-  "block.mendelism.pea_crop_plant": "Wild Type Pea Plant",
-  "block.mendelism.pea_crop_plant_white_flower": "Wild Type Pea Plant",
-  "block.mendelism.pea_crop_plant_shrunken_peel": "Wild Type Pea Plant",
-  "block.mendelism.pea_crop_plant_yellow_peel": "Wild Type Pea Plant",
-  "block.mendelism.pea_crop_plant_wrinkled_seed": "Wild Type Pea Plant",
-  "block.mendelism.pea_crop_plant_yellow_seed": "Wild Type Pea Plant",
-
+  "block.mendelism.pea_crop_plant": "Wild Type Pea Plant(Normal)",
+  "block.mendelism.pea_crop_plant_white_flower": "Wild Type Pea Plant(White Flower)",
+  "block.mendelism.pea_crop_plant_shrunken_peel": "Wild Type Pea Plant(Shrunken Peel)",
+  "block.mendelism.pea_crop_plant_yellow_peel": "Wild Type Pea Plant(Yellow Peel)",
+  "block.mendelism.pea_crop_plant_wrinkled_seed": "Wild Type Pea Plant(Wrinkled Seed)",
+  "block.mendelism.pea_crop_plant_yellow_seed": "Wild Type Pea Plant(Yellow Seed)",
   "item.mendelism.tooltip.has_pollen": "§dHas Pollen",
   "item.mendelism.tooltip.has_not_pollen": "§8Has No Pollen",
-  "item.mendelism.tooltip.need_machine": "§8You Need A Genotype Viewing Machine(Right Click) to Check out the Genotype§r",
+  "item.mendelism.tooltip.need_machine": "§8You Need A Genotype Viewing Machine (Right Click) to Check out the Genotype§r",
   "item.mendelism.tooltip.shift": "Press §e[SHIFT]§r For Genotype",
 
   "item.mendelism.pea.tooltip.flower_color_dominant": "§dFlower Color§r：§cRed§r（Dominant）",

@@ -34,11 +34,11 @@ public class ModPeaCropBlock extends CropBlock {
     //果皮颜色  绿色·黄色
     //种皮形状  饱满·皱缩
     //种皮颜色  绿色·黄色
-    private static final IntProperty B_FLOWER_COLOR = IntProperty.of("flower_color", 1, 3);
-    private static final IntProperty B_PEEL_SHAPE = IntProperty.of("peel_shape", 1, 3);
-    private static final IntProperty B_PEEL_COLOR = IntProperty.of("peel_color", 1, 3);
-    private static final IntProperty B_SEED_SHAPE = IntProperty.of("seed_shape", 1, 3);
-    private static final IntProperty B_SEED_COLOR = IntProperty.of("seed_color", 1, 3);
+    private static final IntProperty B_FLOWER_COLOR = IntProperty.of("flower_color", 1, 9);
+    private static final IntProperty B_PEEL_SHAPE = IntProperty.of("peel_shape", 1, 9);
+    private static final IntProperty B_PEEL_COLOR = IntProperty.of("peel_color", 1, 9);
+    private static final IntProperty B_SEED_SHAPE = IntProperty.of("seed_shape", 1, 9);
+    private static final IntProperty B_SEED_COLOR = IntProperty.of("seed_color", 1, 9);
 
     //是否有雄蕊
     private static final BooleanProperty HAS_STAMEN = BooleanProperty.of("has_stamen");
@@ -46,11 +46,6 @@ public class ModPeaCropBlock extends CropBlock {
     //是否有花粉输入
     private static final BooleanProperty HAS_POLLEN = BooleanProperty.of("has_pollen");
 
-    private int P_FLOWER_COLOR;
-    private int P_PEEL_SHAPE;
-    private int P_PEEL_COLOR;
-    private int P_SEED_SHAPE;
-    private int P_SEED_COLOR;
 
     public ModPeaCropBlock(Settings settings) {
         super(settings);
@@ -72,11 +67,6 @@ public class ModPeaCropBlock extends CropBlock {
                 .with(HAS_STAMEN, true)
                 .with(HAS_POLLEN, false));
 
-        P_FLOWER_COLOR = 1;
-        P_PEEL_SHAPE = 1;
-        P_PEEL_COLOR = 1;
-        P_SEED_SHAPE = 1;
-        P_SEED_COLOR = 1;
     }
 
     @Override
@@ -92,11 +82,6 @@ public class ModPeaCropBlock extends CropBlock {
                 .with(B_SEED_SHAPE, itemStack.getNbt().getInt("seed_shape"))
                 .with(B_SEED_COLOR, itemStack.getNbt().getInt("seed_color")));
 
-        P_FLOWER_COLOR = state.get(B_FLOWER_COLOR);
-        P_PEEL_SHAPE = state.get(B_PEEL_SHAPE);
-        P_PEEL_COLOR = state.get(B_PEEL_COLOR);
-        P_SEED_SHAPE = state.get(B_SEED_SHAPE);
-        P_SEED_COLOR = state.get(B_SEED_COLOR);
 
 
         super.onPlaced(world, pos, state, placer, itemStack);
@@ -300,12 +285,70 @@ public class ModPeaCropBlock extends CropBlock {
         }
     }
 
+    private void giveInt(BlockState state, IntProperty property, int b, int p){
+            if (state.get(property) == 1)
+            {
+                b = 1;
+                p = 1;
+            }
+            else if (state.get(property) == 2)
+            {
+                b = 2;
+                p = 1;
+            }
+            else if (state.get(property) == 3)
+            {
+                b = 3;
+                p = 1;
+            }
+            else if (state.get(property) == 4)
+            {
+                b = 1;
+                p = 2;
+            }
+            else if (state.get(property) == 5)
+            {
+                b = 2;
+                p = 2;
+            }
+            else if (state.get(property) == 6)
+            {
+                b = 3;
+                p = 2;
+            }
+            else if (state.get(property) == 7)
+            {
+                b = 3;
+                p = 1;
+            }
+            else if (state.get(property) == 8)
+            {
+                b = 3;
+                p = 2;
+            }
+            else if (state.get(property) == 9)
+            {
+                b = 3;
+                p = 3;
+            }
+    }
+
     private void generalBlockPropertyToNbt(BlockState state, NbtCompound nbt){
-        blockPropertyToNbt(state, B_FLOWER_COLOR, nbt, "b_flower_color");
-        blockPropertyToNbt(state, B_PEEL_SHAPE, nbt, "b_peel_shape");
-        blockPropertyToNbt(state, B_PEEL_COLOR, nbt, "b_peel_color");
-        blockPropertyToNbt(state, B_SEED_SHAPE, nbt, "b_seed_shape");
-        blockPropertyToNbt(state, B_SEED_COLOR, nbt, "b_seed_color");
+
+        int bFlowerColor = 0, P_FLOWER_COLOR = 0, bPeelShape = 0, P_PEEL_SHAPE = 0, bPeelColor = 0, P_PEEL_COLOR = 0, bSeedShape = 0, P_SEED_SHAPE = 0, bSeedColor = 0, P_SEED_COLOR = 0;
+
+
+        giveInt(state, B_FLOWER_COLOR, bFlowerColor, P_FLOWER_COLOR);
+        giveInt(state, B_PEEL_SHAPE, bPeelShape, P_PEEL_SHAPE);
+        giveInt(state, B_PEEL_COLOR, bPeelColor, P_PEEL_COLOR);
+        giveInt(state, B_SEED_SHAPE, bSeedShape, P_SEED_SHAPE);
+        giveInt(state, B_SEED_COLOR, bSeedColor, P_SEED_COLOR);
+
+        nbt.putInt("b_flower_color", bFlowerColor);
+        nbt.putInt("b_peel_shape", bPeelShape);
+        nbt.putInt("b_peel_color", bPeelColor);
+        nbt.putInt("b_seed_shape", bSeedShape);
+        nbt.putInt("b_seed_color", bSeedColor);
         nbt.putInt("p_flower_color", P_FLOWER_COLOR);
         nbt.putInt("p_peel_shape", P_PEEL_SHAPE);
         nbt.putInt("p_peel_color", P_PEEL_COLOR);
@@ -379,6 +422,37 @@ public class ModPeaCropBlock extends CropBlock {
         }
     }
 
+    private int chooseBGene(int b, int p){
+        if (b == 1 && p == 1){
+            return 1;
+        }
+        else if (b == 2 && p == 1){
+            return 2;
+        }
+        else if (b == 3 && p == 1){
+            return 3;
+        }
+        else if (b == 1 && p == 2){
+            return 4;
+        }
+        else if (b == 2 && p == 2){
+            return 5;
+        }
+        else if (b == 3 && p == 2){
+            return 6;
+        }
+        else if (b == 1 && p == 3){
+            return 7;
+        }
+        else if (b == 2 && p == 3){
+            return 8;
+        }
+        else if (b == 3 && p == 3){
+            return 9;
+        }
+        else return 1;
+    }
+
     //在授粉之后进行BlockState内基因型的更新
     private void saveGenotype(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, ItemStack brush){
         assert brush.getNbt() != null;
@@ -386,11 +460,25 @@ public class ModPeaCropBlock extends CropBlock {
         world.setBlockState(pos, withHasStamen(false));
         world.setBlockState(pos, withHasPollen(true));
 
-        P_FLOWER_COLOR = brush.getNbt().getInt("flower_color");
-        P_PEEL_SHAPE = brush.getNbt().getInt("peel_shape");
-        P_PEEL_COLOR = brush.getNbt().getInt("peel_color");
-        P_SEED_SHAPE = brush.getNbt().getInt("seed_shape");
-        P_SEED_COLOR = brush.getNbt().getInt("seed_color");
+        int pFlowerColor = brush.getNbt().getInt("flower_color");
+        int pPeelShape = brush.getNbt().getInt("peel_shape");
+        int pPeelColor = brush.getNbt().getInt("peel_color");
+        int pSeedShape = brush.getNbt().getInt("seed_shape");
+        int pSeedColor = brush.getNbt().getInt("seed_color");
+
+        setDefaultState(this.getStateManager().getDefaultState()
+                .with(B_FLOWER_COLOR, chooseBGene(state.get(B_FLOWER_COLOR), pFlowerColor)));
+
+
+        setDefaultState(this.getStateManager().getDefaultState()
+                .with(HAS_STAMEN, false)
+                .with(HAS_POLLEN, true)
+                .with(B_FLOWER_COLOR, chooseBGene(state.get(B_FLOWER_COLOR), pFlowerColor))
+                .with(B_PEEL_SHAPE, chooseBGene(state.get(B_PEEL_SHAPE), pPeelShape))
+                .with(B_PEEL_COLOR, chooseBGene(state.get(B_PEEL_COLOR), pPeelColor))
+                .with(B_SEED_SHAPE, chooseBGene(state.get(B_SEED_SHAPE), pSeedShape))
+                .with(B_SEED_COLOR, chooseBGene(state.get(B_SEED_COLOR), pSeedColor)));
+
     }
 
     private int calculateGene(int gene01, int gene02){

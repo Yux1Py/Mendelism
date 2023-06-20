@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "mendelism",
-  "version": "1.0.0",
+  "version": "0.0.2-1.18.2",
 
   "name": "Mendelism",
   "description": "This is a Mod about Basic Content about Law of Uniformity and Law of Independent Assortment, as well as something about Gregor Johann Mendel!",
@@ -14,7 +14,7 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/mendelism/icon.png",
+  "icon": "assets/mendelism/textures/icon.png",
 
   "environment": "*",
   "entrypoints": {

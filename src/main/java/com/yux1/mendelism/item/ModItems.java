@@ -92,8 +92,8 @@ public class ModItems {
             new Item(new FabricItemSettings().maxCount(1)
                     .group(ModItemGroup.MENDELISM)));
 
-    public static final Item AAA = registerItem("aaa",
-            new aaa(new FabricItemSettings().group(ModItemGroup.MENDELISM)));
+   /* public static final Item AAA = registerItem("aaa",
+            new aaa(new FabricItemSettings().group(ModItemGroup.MENDELISM)));*/
 
     private static Item registerItem(String name, Item item){
         return Registry.register(Registry.ITEM, new Identifier(Mendelism.MOD_ID, name), item);

@@ -35,7 +35,7 @@ public class ModPeaPodItem extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 
         if (stack.getNbt() != null) {
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_flower_color"))));
+                    /*tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_flower_color"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_peel_shape"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_peel_color"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("b_seed_shape"))));
@@ -44,7 +44,7 @@ public class ModPeaPodItem extends Item {
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_peel_shape"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_peel_color"))));
                     tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_seed_shape"))));
-                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_seed_color"))));
+                    tooltip.add(new LiteralText(String.valueOf(stack.getNbt().getInt("p_seed_color"))));*/
         }
         else {
             if (stack.getItem() == ModItems.PEA_POD){

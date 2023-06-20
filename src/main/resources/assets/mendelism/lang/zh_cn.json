@@ -17,12 +17,12 @@
   "item.mendelism.genotype_viewing_machine": "基因查看仪",
 
   "block.mendelism.pea_crop": "豌豆植株",
-  "block.mendelism.pea_crop_plant": "野生型豌豆植株",
-  "block.mendelism.pea_crop_plant_white_flower": "野生型豌豆植株",
-  "block.mendelism.pea_crop_plant_shrunken_peel": "野生型豌豆植株",
-  "block.mendelism.pea_crop_plant_yellow_peel": "野生型豌豆植株",
-  "block.mendelism.pea_crop_plant_wrinkled_seed": "野生型豌豆植株",
-  "block.mendelism.pea_crop_plant_yellow_seed": "野生型豌豆植株",
+  "block.mendelism.pea_crop_plant": "野生型豌豆植株（普通）",
+  "block.mendelism.pea_crop_plant_white_flower": "野生型豌豆植株（白花）",
+  "block.mendelism.pea_crop_plant_shrunken_peel": "野生型豌豆植株（皱缩果皮）",
+  "block.mendelism.pea_crop_plant_yellow_peel": "野生型豌豆植株（黄色果皮）",
+  "block.mendelism.pea_crop_plant_wrinkled_seed": "野生型豌豆植株（皱缩种皮）",
+  "block.mendelism.pea_crop_plant_yellow_seed": "野生型豌豆植株（黄色果皮）",
 
   "item.mendelism.tooltip.has_pollen": "§d有花粉",
   "item.mendelism.tooltip.has_not_pollen": "§8无花粉",
