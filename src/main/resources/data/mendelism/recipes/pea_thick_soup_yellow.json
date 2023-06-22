@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    " D "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:sugar"
+    },
+    "A": {
+      "tag": "mendelism:pea_yellow"
+    },
+    "D": {
+      "item": "minecraft:bowl"
+    }
+  },
+  "result": {
+    "item": "mendelism:pea_thick_soup_yellow"
+  }
+}

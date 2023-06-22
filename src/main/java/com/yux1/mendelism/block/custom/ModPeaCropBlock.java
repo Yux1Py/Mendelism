@@ -2,9 +2,7 @@ package com.yux1.mendelism.block.custom;
 
 import com.yux1.mendelism.item.ModItems;
 import com.yux1.mendelism.partical.ModParticles;
-import com.yux1.mendelism.util.Genotype;
 import com.yux1.mendelism.util.ModTags;
-import com.yux1.mendelism.util.ModUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
@@ -15,7 +13,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -25,8 +22,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 public class ModPeaCropBlock extends CropBlock {
@@ -75,11 +70,6 @@ public class ModPeaCropBlock extends CropBlock {
                 .with(B_PEEL_COLOR, 1)
                 .with(B_SEED_SHAPE, 1)
                 .with(B_SEED_COLOR, 1)
-                /*.with(P_FLOWER_COLOR, 1)
-                .with(P_PEEL_SHAPE, 1)
-                .with(P_PEEL_COLOR, 1)
-                .with(P_SEED_SHAPE, 1)
-                .with(P_SEED_COLOR, 1)*/
                 .with(HAS_STAMEN, true)
                 .with(HAS_POLLEN, false));
 
@@ -96,12 +86,7 @@ public class ModPeaCropBlock extends CropBlock {
                 .with(B_PEEL_SHAPE, itemStack.getNbt().getInt("peel_shape"))
                 .with(B_PEEL_COLOR, itemStack.getNbt().getInt("peel_color"))
                 .with(B_SEED_SHAPE, itemStack.getNbt().getInt("seed_shape"))
-                .with(B_SEED_COLOR, itemStack.getNbt().getInt("seed_color"))
-                /*.with(P_FLOWER_COLOR, state.get(B_FLOWER_COLOR))
-                .with(P_PEEL_SHAPE, state.get(B_PEEL_SHAPE))
-                .with(P_PEEL_COLOR, state.get(B_PEEL_COLOR))
-                .with(P_SEED_SHAPE, state.get(B_SEED_SHAPE))
-                .with(P_SEED_COLOR, state.get(B_SEED_COLOR))*/);
+                .with(B_SEED_COLOR, itemStack.getNbt().getInt("seed_color")));
 
 
 
@@ -112,8 +97,7 @@ public class ModPeaCropBlock extends CropBlock {
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(HAS_STAMEN, HAS_POLLEN);
-        builder.add(B_FLOWER_COLOR, B_PEEL_SHAPE, B_PEEL_COLOR, B_SEED_SHAPE, B_SEED_COLOR
-                /*, P_FLOWER_COLOR, P_PEEL_SHAPE, P_PEEL_COLOR, P_SEED_SHAPE, P_SEED_COLOR*/);
+        builder.add(B_FLOWER_COLOR, B_PEEL_SHAPE, B_PEEL_COLOR, B_SEED_SHAPE, B_SEED_COLOR);
         super.appendProperties(builder);
     }
 
@@ -390,7 +374,7 @@ public class ModPeaCropBlock extends CropBlock {
     private void saveGenotype(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, ItemStack brush){
         assert brush.getNbt() != null;
 
-        int P_FLOWER_COLOR = brush.getNbt().getInt("flower_color");
+        /*int P_FLOWER_COLOR = brush.getNbt().getInt("flower_color");
         int P_PEEL_SHAPE = brush.getNbt().getInt("peel_shape");
         int P_PEEL_COLOR = brush.getNbt().getInt("peel_color");
         int P_SEED_SHAPE = brush.getNbt().getInt("seed_shape");
@@ -400,15 +384,40 @@ public class ModPeaCropBlock extends CropBlock {
         int newPeelShape = calculateGene(state.get(B_PEEL_SHAPE), P_PEEL_SHAPE);
         int newPeelColor = calculateGene(state.get(B_PEEL_COLOR), P_PEEL_COLOR);
         int newSeedShape = calculateGene(state.get(B_SEED_SHAPE), P_SEED_SHAPE);
-        int newSeedColor = calculateGene(state.get(B_SEED_COLOR), P_SEED_COLOR);
+        int newSeedColor = calculateGene(state.get(B_SEED_COLOR), P_SEED_COLOR);*/
 
-        this.getStateManager().getDefaultState()
+        int bFlowerColor = state.get(B_FLOWER_COLOR);
+        int pFlowerColor = brush.getNbt().getInt("flower_color");
+        int newFlowerColor = calculateGene(bFlowerColor, pFlowerColor);
+
+        int bPeelShape = state.get(B_PEEL_SHAPE);
+        int pPeelShape = brush.getNbt().getInt("peel_shape");
+        int newPeelShape = calculateGene(bPeelShape, pPeelShape);
+
+        int bPeelColor = state.get(B_PEEL_COLOR);
+        int pPeelColor = brush.getNbt().getInt("peel_color");
+        int newPeelColor = calculateGene(bPeelColor, pPeelColor);
+
+        int bSeedShape = state.get(B_SEED_SHAPE);
+        int pSeedShape = brush.getNbt().getInt("seed_shape");
+        int newSeedShape = calculateGene(bSeedShape, pSeedShape);
+
+        int bSeedColor = state.get(B_SEED_COLOR);
+        int pSeedColor = brush.getNbt().getInt("seed_color");
+        int newSeedColor = calculateGene(bSeedColor, pSeedColor);
+
+        /*this.getStateManager().getDefaultState()
                 .with(B_FLOWER_COLOR, newFlowerColor)
                 .with(B_PEEL_SHAPE, newPeelShape)
                 .with(B_PEEL_COLOR, newPeelColor)
                 .with(B_SEED_SHAPE, newSeedShape)
-                .with(B_SEED_COLOR, newSeedColor);
+                .with(B_SEED_COLOR, newSeedColor);*/
 
+        world.setBlockState(pos, state.with(B_FLOWER_COLOR, newFlowerColor));
+        world.setBlockState(pos, state.with(B_PEEL_SHAPE, newPeelShape));
+        world.setBlockState(pos, state.with(B_PEEL_COLOR, newPeelColor));
+        world.setBlockState(pos, state.with(B_SEED_SHAPE, newSeedShape));
+        world.setBlockState(pos, state.with(B_SEED_COLOR, newSeedColor));
         world.setBlockState(pos, withHasStamen(false));
         world.setBlockState(pos, withHasPollen(true));
 
